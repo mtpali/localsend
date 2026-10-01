@@ -24,10 +24,7 @@ final _media = {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.android);
-
   tearDown(() {
-    debugDefaultTargetPlatformOverride = null;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(_channel, null);
   });
 
@@ -93,7 +90,7 @@ void main() {
     expect(find.text('Could not load albums. All photos and videos are still available.'), findsOneWidget);
     expect((calls.lastWhere((c) => c.method == 'getAssetPathList').arguments as Map)['option'], query);
     await tester.pumpWidget(const SizedBox());
-  });
+  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 
   testWidgets('returning from settings reloads media after permission is granted', (tester) async {
     var permission = 2;
@@ -120,7 +117,7 @@ void main() {
     expect(find.byKey(const ValueKey('photo1')), findsOneWidget);
     expect(find.byKey(const ValueKey('video1')), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
-  });
+  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 
   testWidgets('a failed All query can be retried without reopening the gallery', (tester) async {
     var fail = true;
@@ -156,5 +153,5 @@ void main() {
     expect(find.byKey(const ValueKey('photo1')), findsOneWidget);
     expect(find.byKey(const ValueKey('video1')), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
-  });
+  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 }
