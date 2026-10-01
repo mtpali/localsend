@@ -14,7 +14,7 @@ for abi, filename in expected.items():
         architectures = {name.split("/")[1] for name in names if name.startswith("lib/") and name.endswith(".so")}
         assert architectures == {abi}, architectures
         assert not any("CHANGELOG" in name for name in names)
-        assert not any("logo-512" in name or "logo-256" in name or "logo-128" in name for name in names)
+        assert not any(name.startswith("assets/flutter_assets/assets/img/") for name in names), "Desktop tray assets must not ship in Android"
         assert not any("assets/i18n/" in name for name in names)
         assert any(name.endswith("/libapp.so") for name in names)
         assert any(name.endswith("/librust_lib_localsend_app.so") for name in names)

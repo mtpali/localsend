@@ -35,6 +35,7 @@ class GalleryMediaStoreTest {
     private lateinit var provider: MediaProvider
     private lateinit var manager: PhotoManager
     private lateinit var option: FilterOption
+    private val expectedIds = listOf(50L, 40L, 30L, 20L, 10L, 5L)
 
     @Before
     fun setUp() {
@@ -42,10 +43,14 @@ class GalleryMediaStoreTest {
         provider = MediaProvider(context)
         ShadowContentResolver.registerProviderInternal("media", provider)
         manager = PhotoManager(context)
-        val resource = javaClass.classLoader!!.getResourceAsStream("gallery-query.json")
+        option = readOption("gallery-query.json")
+    }
+
+    private fun readOption(name: String): FilterOption {
+        val resource = javaClass.classLoader!!.getResourceAsStream(name)
             ?: error("Run the gallery Flutter test with EXPORT_MEDIA_QUERY=true first")
         val arguments = resource.bufferedReader().use { JSONObject(it.readText()).toMap() }
-        option = ConvertUtils.convertToFilterOptions(arguments)!!
+        return ConvertUtils.convertToFilterOptions(arguments)!!
     }
 
     @After
@@ -66,25 +71,36 @@ class GalleryMediaStoreTest {
     fun actualDartFilterLoadsPhotosAndVideosAndCountsAllMedia() {
         val albums = manager.getAssetPathList(3, true, true, option)
         assertEquals(1, albums.size)
-        assertEquals(3, albums.single().assetCount)
+        assertEquals(6, albums.single().assetCount)
         val assets = manager.getAssetListPaged(albums.single().id, 3, 0, 80, option)
-        assertEquals(listOf(20L, 10L, 5L), assets.map { it.id })
-        assertEquals(listOf(2, 1, 1), assets.map { it.type })
+        assertEquals(expectedIds, assets.map { it.id })
+        assertEquals(listOf(2, 2, 2, 2, 1, 1), assets.map { it.type })
     }
 
     @Test
     fun pagingRemainsStableWhenMediaHaveEqualOrFutureTimestamps() {
-        val pages = (0..3).map { page ->
+        val pages = (0..6).map { page ->
             manager.getAssetListPaged(PhotoManager.ALL_ID, 3, page, 1, option)
         }
-        assertEquals(listOf(20L, 10L, 5L), pages.flatten().map { it.id })
+        assertEquals(expectedIds, pages.flatten().map { it.id })
         assertTrue(pages.last().isEmpty())
     }
 
     @Test
     fun anUnknownAlbumNameDoesNotPreventLoadingItsMedia() {
         val assets = manager.getAssetListPaged("7", 3, 0, 80, option)
-        assertEquals(listOf(20L, 10L, 5L), assets.map { it.id })
+        assertEquals(expectedIds, assets.map { it.id })
+    }
+
+    @Test
+    fun previousFilterHidLongVideosAndVideosWithUnknownDuration() {
+        val previous = manager.getAssetListPaged(PhotoManager.ALL_ID, 3, 0, 80, readOption("gallery-previous-query.json"))
+        assertEquals(listOf(20L, 10L, 5L), previous.map { it.id })
+        val current = manager.getAssetListPaged(PhotoManager.ALL_ID, 3, 0, 80, option)
+        assertEquals(expectedIds, current.map { it.id })
+        assertEquals(0L, current.first { it.id == 30L }.duration)
+        assertEquals(172800000L, current.first { it.id == 40L }.duration)
+        assertEquals(2592000000L, current.first { it.id == 50L }.duration)
     }
 
     private fun JSONObject.toMap(): Map<String, Any?> = keys().asSequence().associateWith { key -> convert(get(key)) }
@@ -106,7 +122,7 @@ class GalleryMediaStoreTest {
             database.execSQL("CREATE TABLE files (${columns.joinToString { column ->
                 "\"$column\" ${if (column in textColumns) "TEXT" else "INTEGER"}"
             }})")
-            for ((id, type) in listOf(5L to 1, 10L to 1, 20L to 3, 100L to 2)) {
+            for ((id, type) in listOf(5L to 1, 10L to 1, 20L to 3, 30L to 3, 40L to 3, 50L to 3, 100L to 2)) {
                 val file = File(context.cacheDir, "gallery-native-test-$id").apply { writeText("media fixture") }
                 files.add(file)
                 val row = ContentValues().apply {
@@ -120,7 +136,12 @@ class GalleryMediaStoreTest {
                     putNull("bucket_display_name")
                     put("width", 400)
                     put("height", 300)
-                    put("duration", 5000)
+                    when (id) {
+                        30L -> putNull("duration")
+                        40L -> put("duration", 172800000L)
+                        50L -> put("duration", 2592000000L)
+                        else -> put("duration", 5000)
+                    }
                     put("date_added", 4102444800L) // Future/equal timestamps must not hide media.
                     put("date_modified", 4102444800L)
                     put("datetaken", 4102444800000L)

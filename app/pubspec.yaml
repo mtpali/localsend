@@ -4,7 +4,7 @@ homepage: https://localsend.org/
 publish_to: "none"
 resolution: workspace
 
-version: 1.18.2+65
+version: 1.18.2+66
 
 environment:
   flutter: ^3.41.0
@@ -99,7 +99,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/img/
+    - path: assets/img/
+      platforms: [linux, macos, windows]
 
 flutter_gen:
   line_length: 150

@@ -135,6 +135,8 @@ jobs:
       - name: Android MediaStore and SQLite regression tests
         working-directory: app/android
         run: ./gradlew :app:testReleaseUnitTest --tests org.localsend.localsend_app.GalleryMediaStoreTest -Ptarget-platform=android-arm,android-arm64
+      - name: Verify and summarize native gallery test results
+        run: python3 support/scripts/summarize_gallery_tests.py
       - name: Verify architectures, shrinking, and removed assets
         run: python3 support/scripts/verify_android_apks.py
       - uses: actions/upload-artifact@v6

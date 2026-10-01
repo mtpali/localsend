@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:localsend_app/pages/internal_gallery_page.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 const _channel = MethodChannel('com.fluttercandies/photo_manager');
 final _album = {
@@ -22,7 +23,10 @@ final _media = {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.android);
+
   tearDown(() {
+    debugDefaultTargetPlatformOverride = null;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(_channel, null);
   });
 
@@ -59,15 +63,25 @@ void main() {
     expect(calls.where((c) => c.method == 'getAssetPathList').length, 1);
     final query = (calls.firstWhere((c) => c.method == 'getAssetPathList').arguments as Map)['option'] as Map;
     expect((calls.firstWhere((c) => c.method == 'getAssetListPaged').arguments as Map)['option'], query);
-    expect(query['child']['orders'], isEmpty); // Native classical filters use _id DESC.
-    expect(query['child']['createDate']['ignore'], true);
-    expect(query['child']['image']['size']['ignoreSize'], true);
+    expect(query['type'], 1);
+    expect(query['child']['where'], isEmpty);
+    expect(query['child']['orderBy'], [
+      {'column': '_id', 'isAsc': false},
+    ]);
     if (const bool.fromEnvironment('EXPORT_MEDIA_QUERY')) {
       // Feed the actual Dart channel payload to the Kotlin/SQLite regression
       // suite, so it exercises the plugin with the same query as this screen.
       final fixture = File('build/gallery-tests/gallery-query.json');
       fixture.parent.createSync(recursive: true);
       fixture.writeAsStringSync(jsonEncode(query));
+      // Preserve the preceding release's exact filter as a negative regression
+      // fixture: it silently omitted long videos and rows with null duration.
+      final previous = FilterOptionGroup(
+        imageOption: const FilterOption(sizeConstraint: SizeConstraint(ignoreSize: true)),
+        videoOption: const FilterOption(sizeConstraint: SizeConstraint(ignoreSize: true)),
+        createTimeCond: DateTimeCond.def().copyWith(ignore: true),
+      );
+      File('build/gallery-tests/gallery-previous-query.json').writeAsStringSync(jsonEncode(previous.toMap()));
     }
     expect((calls.firstWhere((c) => c.method == 'requestPermissionExtend').arguments as Map)['androidPermission']['mediaLocation'], false);
 
