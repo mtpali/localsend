@@ -1,8 +1,8 @@
-import 'package:localsend_app/widget/static_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
 import 'package:localsend_app/widget/dialogs/custom_bottom_sheet.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:routerino/routerino.dart';
 
 class EncryptionDisabledNotice extends StatelessWidget {

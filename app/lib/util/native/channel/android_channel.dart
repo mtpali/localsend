@@ -103,3 +103,5 @@ class FileInfo with FileInfoMappable {
 Future<void> acquireDiscoveryLockAndroid() async {
   await const MethodChannel('org.localsend.localsend_app/localsend').invokeMethod<void>('acquireDiscoveryLock');
 }
+
+Future<void> openAppSettingsAndroid() => _methodChannel.invokeMethod<void>('openAppSettings');

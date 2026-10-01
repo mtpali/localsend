@@ -1,9 +1,8 @@
-import 'package:localsend_app/widget/static_controls.dart';
-import 'package:localsend_app/config/contact.dart';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localsend_app/config/contact.dart';
 import 'package:localsend_app/config/theme.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/pages/settings/network_interfaces_page.dart';
@@ -21,8 +20,8 @@ import 'package:localsend_app/widget/dialogs/pin_dialog.dart';
 import 'package:localsend_app/widget/dialogs/quick_save_notice.dart';
 import 'package:localsend_app/widget/dialogs/text_field_tv.dart';
 import 'package:localsend_app/widget/dialogs/text_field_with_actions.dart';
-import 'package:localsend_app/widget/labeled_checkbox.dart';
 import 'package:localsend_app/widget/responsive_list_view.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/constants.dart';
 import 'package:localsend_isolates/model/device.dart';
 import 'package:refena_flutter/refena_flutter.dart';

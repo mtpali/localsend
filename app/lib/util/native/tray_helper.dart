@@ -5,7 +5,6 @@ import 'package:localsend_app/gen/assets.gen.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
 import 'package:logging/logging.dart';
-import 'package:refena_flutter/refena_flutter.dart';
 import 'package:tray_manager/tray_manager.dart' as tm;
 import 'package:window_manager/window_manager.dart';
 

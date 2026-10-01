@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/cupertino.dart' show DefaultCupertinoLocalizations;
+import 'package:flutter/material.dart';
 import 'package:localsend_app/config/init.dart';
 import 'package:localsend_app/config/init_error.dart';
 import 'package:localsend_app/config/theme.dart';

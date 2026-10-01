@@ -32,6 +32,7 @@ class DiscoveryLifecycle {
     unawaited(
       _ref.redux(nearbyDevicesProvider).dispatchAsync(StartDiscoveryListener()).catchError((Object error, StackTrace stack) {
         _logger.warning('Discovery listener failed', error, stack);
+        return _ref.read(nearbyDevicesProvider);
       }),
     );
     try {

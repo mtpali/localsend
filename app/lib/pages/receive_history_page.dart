@@ -1,4 +1,3 @@
-import 'package:localsend_app/widget/static_controls.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ import 'package:localsend_app/widget/dialogs/file_info_dialog.dart';
 import 'package:localsend_app/widget/dialogs/history_clear_dialog.dart';
 import 'package:localsend_app/widget/file_thumbnail.dart';
 import 'package:localsend_app/widget/responsive_list_view.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/model/device.dart';
 import 'package:localsend_isolates/model/session_status.dart';
 import 'package:localsend_isolates/util/file_size_helper.dart';
@@ -27,7 +27,8 @@ enum _EntryOption {
   open,
   showInFolder,
   info,
-  delete;
+  delete
+  ;
 
   String get label {
     return switch (this) {

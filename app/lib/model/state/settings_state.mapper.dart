@@ -30,26 +30,6 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
   );
   static String _$alias(SettingsState v) => v.alias;
   static const Field<SettingsState, String> _f$alias = Field('alias', _$alias);
-  static ThemeMode _$theme(SettingsState v) => v.theme;
-  static const Field<SettingsState, ThemeMode> _f$theme = Field(
-    'theme',
-    _$theme,
-  );
-  static ColorMode _$colorMode(SettingsState v) => v.colorMode;
-  static const Field<SettingsState, ColorMode> _f$colorMode = Field(
-    'colorMode',
-    _$colorMode,
-  );
-  static Color _$customColor(SettingsState v) => v.customColor;
-  static const Field<SettingsState, Color> _f$customColor = Field(
-    'customColor',
-    _$customColor,
-  );
-  static AppLocale? _$locale(SettingsState v) => v.locale;
-  static const Field<SettingsState, AppLocale> _f$locale = Field(
-    'locale',
-    _$locale,
-  );
   static int _$port(SettingsState v) => v.port;
   static const Field<SettingsState, int> _f$port = Field('port', _$port);
   static List<String>? _$networkWhitelist(SettingsState v) =>
@@ -89,12 +69,6 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
     'quickSave',
     _$quickSave,
   );
-  static bool _$quickSaveFromFavorites(SettingsState v) =>
-      v.quickSaveFromFavorites;
-  static const Field<SettingsState, bool> _f$quickSaveFromFavorites = Field(
-    'quickSaveFromFavorites',
-    _$quickSaveFromFavorites,
-  );
   static String? _$receivePin(SettingsState v) => v.receivePin;
   static const Field<SettingsState, String> _f$receivePin = Field(
     'receivePin',
@@ -121,11 +95,6 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
   static const Field<SettingsState, bool> _f$saveWindowPlacement = Field(
     'saveWindowPlacement',
     _$saveWindowPlacement,
-  );
-  static bool _$enableAnimations(SettingsState v) => v.enableAnimations;
-  static const Field<SettingsState, bool> _f$enableAnimations = Field(
-    'enableAnimations',
-    _$enableAnimations,
   );
   static DeviceType? _$deviceType(SettingsState v) => v.deviceType;
   static const Field<SettingsState, DeviceType> _f$deviceType = Field(
@@ -174,10 +143,6 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
   final MappableFields<SettingsState> fields = const {
     #showToken: _f$showToken,
     #alias: _f$alias,
-    #theme: _f$theme,
-    #colorMode: _f$colorMode,
-    #customColor: _f$customColor,
-    #locale: _f$locale,
     #port: _f$port,
     #networkWhitelist: _f$networkWhitelist,
     #networkBlacklist: _f$networkBlacklist,
@@ -186,14 +151,12 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
     #saveToGallery: _f$saveToGallery,
     #saveToHistory: _f$saveToHistory,
     #quickSave: _f$quickSave,
-    #quickSaveFromFavorites: _f$quickSaveFromFavorites,
     #receivePin: _f$receivePin,
     #autoFinish: _f$autoFinish,
     #minimizeToTray: _f$minimizeToTray,
     #https: _f$https,
     #sendMode: _f$sendMode,
     #saveWindowPlacement: _f$saveWindowPlacement,
-    #enableAnimations: _f$enableAnimations,
     #deviceType: _f$deviceType,
     #deviceModel: _f$deviceModel,
     #shareViaLinkAutoAccept: _f$shareViaLinkAutoAccept,
@@ -208,10 +171,6 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
     return SettingsState(
       showToken: data.dec(_f$showToken),
       alias: data.dec(_f$alias),
-      theme: data.dec(_f$theme),
-      colorMode: data.dec(_f$colorMode),
-      customColor: data.dec(_f$customColor),
-      locale: data.dec(_f$locale),
       port: data.dec(_f$port),
       networkWhitelist: data.dec(_f$networkWhitelist),
       networkBlacklist: data.dec(_f$networkBlacklist),
@@ -220,14 +179,12 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
       saveToGallery: data.dec(_f$saveToGallery),
       saveToHistory: data.dec(_f$saveToHistory),
       quickSave: data.dec(_f$quickSave),
-      quickSaveFromFavorites: data.dec(_f$quickSaveFromFavorites),
       receivePin: data.dec(_f$receivePin),
       autoFinish: data.dec(_f$autoFinish),
       minimizeToTray: data.dec(_f$minimizeToTray),
       https: data.dec(_f$https),
       sendMode: data.dec(_f$sendMode),
       saveWindowPlacement: data.dec(_f$saveWindowPlacement),
-      enableAnimations: data.dec(_f$enableAnimations),
       deviceType: data.dec(_f$deviceType),
       deviceModel: data.dec(_f$deviceModel),
       shareViaLinkAutoAccept: data.dec(_f$shareViaLinkAutoAccept),
@@ -308,10 +265,6 @@ abstract class SettingsStateCopyWith<$R, $In extends SettingsState, $Out>
   $R call({
     String? showToken,
     String? alias,
-    ThemeMode? theme,
-    ColorMode? colorMode,
-    Color? customColor,
-    AppLocale? locale,
     int? port,
     List<String>? networkWhitelist,
     List<String>? networkBlacklist,
@@ -320,14 +273,12 @@ abstract class SettingsStateCopyWith<$R, $In extends SettingsState, $Out>
     bool? saveToGallery,
     bool? saveToHistory,
     bool? quickSave,
-    bool? quickSaveFromFavorites,
     String? receivePin,
     bool? autoFinish,
     bool? minimizeToTray,
     bool? https,
     SendMode? sendMode,
     bool? saveWindowPlacement,
-    bool? enableAnimations,
     DeviceType? deviceType,
     String? deviceModel,
     bool? shareViaLinkAutoAccept,
@@ -370,10 +321,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
   $R call({
     String? showToken,
     String? alias,
-    ThemeMode? theme,
-    ColorMode? colorMode,
-    Color? customColor,
-    Object? locale = $none,
     int? port,
     Object? networkWhitelist = $none,
     Object? networkBlacklist = $none,
@@ -382,14 +329,12 @@ class _SettingsStateCopyWithImpl<$R, $Out>
     bool? saveToGallery,
     bool? saveToHistory,
     bool? quickSave,
-    bool? quickSaveFromFavorites,
     Object? receivePin = $none,
     bool? autoFinish,
     bool? minimizeToTray,
     bool? https,
     SendMode? sendMode,
     bool? saveWindowPlacement,
-    bool? enableAnimations,
     Object? deviceType = $none,
     Object? deviceModel = $none,
     bool? shareViaLinkAutoAccept,
@@ -402,10 +347,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (showToken != null) #showToken: showToken,
       if (alias != null) #alias: alias,
-      if (theme != null) #theme: theme,
-      if (colorMode != null) #colorMode: colorMode,
-      if (customColor != null) #customColor: customColor,
-      if (locale != $none) #locale: locale,
       if (port != null) #port: port,
       if (networkWhitelist != $none) #networkWhitelist: networkWhitelist,
       if (networkBlacklist != $none) #networkBlacklist: networkBlacklist,
@@ -414,8 +355,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
       if (saveToGallery != null) #saveToGallery: saveToGallery,
       if (saveToHistory != null) #saveToHistory: saveToHistory,
       if (quickSave != null) #quickSave: quickSave,
-      if (quickSaveFromFavorites != null)
-        #quickSaveFromFavorites: quickSaveFromFavorites,
       if (receivePin != $none) #receivePin: receivePin,
       if (autoFinish != null) #autoFinish: autoFinish,
       if (minimizeToTray != null) #minimizeToTray: minimizeToTray,
@@ -423,7 +362,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
       if (sendMode != null) #sendMode: sendMode,
       if (saveWindowPlacement != null)
         #saveWindowPlacement: saveWindowPlacement,
-      if (enableAnimations != null) #enableAnimations: enableAnimations,
       if (deviceType != $none) #deviceType: deviceType,
       if (deviceModel != $none) #deviceModel: deviceModel,
       if (shareViaLinkAutoAccept != null)
@@ -440,10 +378,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
   SettingsState $make(CopyWithData data) => SettingsState(
     showToken: data.get(#showToken, or: $value.showToken),
     alias: data.get(#alias, or: $value.alias),
-    theme: data.get(#theme, or: $value.theme),
-    colorMode: data.get(#colorMode, or: $value.colorMode),
-    customColor: data.get(#customColor, or: $value.customColor),
-    locale: data.get(#locale, or: $value.locale),
     port: data.get(#port, or: $value.port),
     networkWhitelist: data.get(#networkWhitelist, or: $value.networkWhitelist),
     networkBlacklist: data.get(#networkBlacklist, or: $value.networkBlacklist),
@@ -452,10 +386,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
     saveToGallery: data.get(#saveToGallery, or: $value.saveToGallery),
     saveToHistory: data.get(#saveToHistory, or: $value.saveToHistory),
     quickSave: data.get(#quickSave, or: $value.quickSave),
-    quickSaveFromFavorites: data.get(
-      #quickSaveFromFavorites,
-      or: $value.quickSaveFromFavorites,
-    ),
     receivePin: data.get(#receivePin, or: $value.receivePin),
     autoFinish: data.get(#autoFinish, or: $value.autoFinish),
     minimizeToTray: data.get(#minimizeToTray, or: $value.minimizeToTray),
@@ -465,7 +395,6 @@ class _SettingsStateCopyWithImpl<$R, $Out>
       #saveWindowPlacement,
       or: $value.saveWindowPlacement,
     ),
-    enableAnimations: data.get(#enableAnimations, or: $value.enableAnimations),
     deviceType: data.get(#deviceType, or: $value.deviceType),
     deviceModel: data.get(#deviceModel, or: $value.deviceModel),
     shareViaLinkAutoAccept: data.get(

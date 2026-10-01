@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/widget/dialogs/custom_bottom_sheet.dart';
 import 'package:routerino/routerino.dart';
-import 'package:system_settings_2/system_settings_2.dart';
+import 'package:localsend_app/util/native/channel/android_channel.dart';
 
 class LocalNetworkDialog extends StatelessWidget {
   const LocalNetworkDialog({super.key});
@@ -17,7 +17,7 @@ class LocalNetworkDialog extends StatelessWidget {
         children: [
           TextButton(onPressed: () => context.pop(), child: Text(t.general.close)),
           ElevatedButton.icon(
-            onPressed: () async => SystemSettings.app(),
+            onPressed: () async => openAppSettingsAndroid(),
             icon: const Icon(Icons.settings),
             label: Text(t.dialogs.localNetworkUnauthorized.gotoSettings),
           ),

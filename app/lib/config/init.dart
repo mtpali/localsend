@@ -1,5 +1,3 @@
-import 'package:localsend_app/provider/network/discovery_lifecycle_provider.dart';
-import 'package:localsend_app/widget/static_controls.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -13,8 +11,7 @@ import 'package:localsend_app/pages/home_page.dart';
 import 'package:localsend_app/pages/home_page_controller.dart';
 import 'package:localsend_app/provider/app_arguments_provider.dart';
 import 'package:localsend_app/provider/device_info_provider.dart';
-import 'package:localsend_app/provider/network/nearby_devices_provider.dart';
-import 'package:localsend_app/provider/network/server/server_provider.dart';
+import 'package:localsend_app/provider/network/discovery_lifecycle_provider.dart';
 import 'package:localsend_app/provider/persistence_provider.dart';
 import 'package:localsend_app/provider/selection/selected_sending_files_provider.dart';
 import 'package:localsend_app/provider/settings_provider.dart';
@@ -32,6 +29,7 @@ import 'package:localsend_app/util/native/tray_helper.dart';
 import 'package:localsend_app/util/notification_strings.dart';
 import 'package:localsend_app/util/ui/snackbar.dart';
 import 'package:localsend_app/widget/dialogs/local_network_dialog.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/isolate.dart';
 import 'package:localsend_isolates/model/dto/file_dto.dart';
 import 'package:localsend_isolates/model/dto/multicast_dto.dart';

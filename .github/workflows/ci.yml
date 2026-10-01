@@ -10,7 +10,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: android-oled-${{ github.ref }}
+  group: android-oled-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
 env:
   FLUTTER_VERSION: "3.41.9"
@@ -32,6 +32,8 @@ jobs:
       - name: Pinned Rust toolchain
         run: rustup toolchain install --profile minimal
       - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
       - name: Resolve dependencies
         run: |
           flutter pub get

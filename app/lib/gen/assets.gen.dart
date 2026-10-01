@@ -14,12 +14,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsImgGen {
   const $AssetsImgGen();
 
-  /// File path: assets/img/logo-128.png
-  AssetGenImage get logo128 => const AssetGenImage('assets/img/logo-128.png');
-
-  /// File path: assets/img/logo-256.png
-  AssetGenImage get logo256 => const AssetGenImage('assets/img/logo-256.png');
-
   /// File path: assets/img/logo-32-black.png
   AssetGenImage get logo32Black => const AssetGenImage('assets/img/logo-32-black.png');
 
@@ -29,27 +23,15 @@ class $AssetsImgGen {
   /// File path: assets/img/logo-32.png
   AssetGenImage get logo32 => const AssetGenImage('assets/img/logo-32.png');
 
-  /// File path: assets/img/logo-512-white.png
-  AssetGenImage get logo512White => const AssetGenImage('assets/img/logo-512-white.png');
-
-  /// File path: assets/img/logo-512.png
-  AssetGenImage get logo512 => const AssetGenImage('assets/img/logo-512.png');
-
   /// File path: assets/img/logo.ico
   String get logo => 'assets/img/logo.ico';
 
   /// List of all assets
-  List<dynamic> get values => [logo128, logo256, logo32Black, logo32White, logo32, logo512White, logo512, logo];
+  List<dynamic> get values => [logo32Black, logo32White, logo32, logo];
 }
 
-class Assets {
-  const Assets._();
-
-  static const String changelog = 'assets/CHANGELOG.md';
+abstract final class Assets {
   static const $AssetsImgGen img = $AssetsImgGen();
-
-  /// List of all assets
-  static List<String> get values => [changelog];
 }
 
 class AssetGenImage {

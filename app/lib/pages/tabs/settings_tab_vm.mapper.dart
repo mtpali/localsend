@@ -67,11 +67,6 @@ class SettingsTabVmMapper extends ClassMapperBase<SettingsTabVm> {
     'deviceInfo',
     _$deviceInfo,
   );
-  static List<ColorMode> _$colorModes(SettingsTabVm v) => v.colorModes;
-  static const Field<SettingsTabVm, List<ColorMode>> _f$colorModes = Field(
-    'colorModes',
-    _$colorModes,
-  );
   static bool _$autoStart(SettingsTabVm v) => v.autoStart;
   static const Field<SettingsTabVm, bool> _f$autoStart = Field(
     'autoStart',
@@ -87,32 +82,6 @@ class SettingsTabVmMapper extends ClassMapperBase<SettingsTabVm> {
   static const Field<SettingsTabVm, bool> _f$showInContextMenu = Field(
     'showInContextMenu',
     _$showInContextMenu,
-  );
-  static Function _$onChangeTheme(SettingsTabVm v) =>
-      (v as dynamic).onChangeTheme as Function;
-  static dynamic _arg$onChangeTheme(f) =>
-      f<void Function(BuildContext, ThemeMode)>();
-  static const Field<SettingsTabVm, Function> _f$onChangeTheme = Field(
-    'onChangeTheme',
-    _$onChangeTheme,
-    arg: _arg$onChangeTheme,
-  );
-  static Function _$onChangeColorMode(SettingsTabVm v) =>
-      (v as dynamic).onChangeColorMode as Function;
-  static dynamic _arg$onChangeColorMode(f) =>
-      f<void Function(BuildContext, ColorMode)>();
-  static const Field<SettingsTabVm, Function> _f$onChangeColorMode = Field(
-    'onChangeColorMode',
-    _$onChangeColorMode,
-    arg: _arg$onChangeColorMode,
-  );
-  static Function _$onTapLanguage(SettingsTabVm v) =>
-      (v as dynamic).onTapLanguage as Function;
-  static dynamic _arg$onTapLanguage(f) => f<void Function(BuildContext)>();
-  static const Field<SettingsTabVm, Function> _f$onTapLanguage = Field(
-    'onTapLanguage',
-    _$onTapLanguage,
-    arg: _arg$onTapLanguage,
   );
   static Function _$onToggleAutoStart(SettingsTabVm v) =>
       (v as dynamic).onToggleAutoStart as Function;
@@ -174,12 +143,6 @@ class SettingsTabVmMapper extends ClassMapperBase<SettingsTabVm> {
     _$onTapAdvanced,
     arg: _arg$onTapAdvanced,
   );
-  static List<ThemeMode> _$themeModes(SettingsTabVm v) => v.themeModes;
-  static const Field<SettingsTabVm, List<ThemeMode>> _f$themeModes = Field(
-    'themeModes',
-    _$themeModes,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<SettingsTabVm> fields = const {
@@ -192,13 +155,9 @@ class SettingsTabVmMapper extends ClassMapperBase<SettingsTabVm> {
     #settings: _f$settings,
     #serverState: _f$serverState,
     #deviceInfo: _f$deviceInfo,
-    #colorModes: _f$colorModes,
     #autoStart: _f$autoStart,
     #autoStartLaunchHidden: _f$autoStartLaunchHidden,
     #showInContextMenu: _f$showInContextMenu,
-    #onChangeTheme: _f$onChangeTheme,
-    #onChangeColorMode: _f$onChangeColorMode,
-    #onTapLanguage: _f$onTapLanguage,
     #onToggleAutoStart: _f$onToggleAutoStart,
     #onToggleAutoStartLaunchHidden: _f$onToggleAutoStartLaunchHidden,
     #onToggleShowInContextMenu: _f$onToggleShowInContextMenu,
@@ -206,7 +165,6 @@ class SettingsTabVmMapper extends ClassMapperBase<SettingsTabVm> {
     #onTapStartServer: _f$onTapStartServer,
     #onTapStopServer: _f$onTapStopServer,
     #onTapAdvanced: _f$onTapAdvanced,
-    #themeModes: _f$themeModes,
   };
 
   static SettingsTabVm _instantiate(DecodingData data) {
@@ -220,13 +178,9 @@ class SettingsTabVmMapper extends ClassMapperBase<SettingsTabVm> {
       settings: data.dec(_f$settings),
       serverState: data.dec(_f$serverState),
       deviceInfo: data.dec(_f$deviceInfo),
-      colorModes: data.dec(_f$colorModes),
       autoStart: data.dec(_f$autoStart),
       autoStartLaunchHidden: data.dec(_f$autoStartLaunchHidden),
       showInContextMenu: data.dec(_f$showInContextMenu),
-      onChangeTheme: data.dec(_f$onChangeTheme),
-      onChangeColorMode: data.dec(_f$onChangeColorMode),
-      onTapLanguage: data.dec(_f$onTapLanguage),
       onToggleAutoStart: data.dec(_f$onToggleAutoStart),
       onToggleAutoStartLaunchHidden: data.dec(_f$onToggleAutoStartLaunchHidden),
       onToggleShowInContextMenu: data.dec(_f$onToggleShowInContextMenu),
@@ -301,8 +255,6 @@ abstract class SettingsTabVmCopyWith<$R, $In extends SettingsTabVm, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   SettingsStateCopyWith<$R, SettingsState, SettingsState> get settings;
   ServerStateCopyWith<$R, ServerState, ServerState>? get serverState;
-  ListCopyWith<$R, ColorMode, ObjectCopyWith<$R, ColorMode, ColorMode>>
-  get colorModes;
   $R call({
     bool? advanced,
     TextEditingController? aliasController,
@@ -313,13 +265,9 @@ abstract class SettingsTabVmCopyWith<$R, $In extends SettingsTabVm, $Out>
     SettingsState? settings,
     ServerState? serverState,
     DeviceInfoResult? deviceInfo,
-    List<ColorMode>? colorModes,
     bool? autoStart,
     bool? autoStartLaunchHidden,
     bool? showInContextMenu,
-    void Function(BuildContext, ThemeMode)? onChangeTheme,
-    void Function(BuildContext, ColorMode)? onChangeColorMode,
-    void Function(BuildContext)? onTapLanguage,
     void Function(BuildContext)? onToggleAutoStart,
     void Function(BuildContext)? onToggleAutoStartLaunchHidden,
     void Function(BuildContext)? onToggleShowInContextMenu,
@@ -346,13 +294,6 @@ class _SettingsTabVmCopyWithImpl<$R, $Out>
   ServerStateCopyWith<$R, ServerState, ServerState>? get serverState =>
       $value.serverState?.copyWith.$chain((v) => call(serverState: v));
   @override
-  ListCopyWith<$R, ColorMode, ObjectCopyWith<$R, ColorMode, ColorMode>>
-  get colorModes => ListCopyWith(
-    $value.colorModes,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(colorModes: v),
-  );
-  @override
   $R call({
     bool? advanced,
     TextEditingController? aliasController,
@@ -363,13 +304,9 @@ class _SettingsTabVmCopyWithImpl<$R, $Out>
     SettingsState? settings,
     Object? serverState = $none,
     DeviceInfoResult? deviceInfo,
-    List<ColorMode>? colorModes,
     bool? autoStart,
     bool? autoStartLaunchHidden,
     bool? showInContextMenu,
-    void Function(BuildContext, ThemeMode)? onChangeTheme,
-    void Function(BuildContext, ColorMode)? onChangeColorMode,
-    void Function(BuildContext)? onTapLanguage,
     void Function(BuildContext)? onToggleAutoStart,
     void Function(BuildContext)? onToggleAutoStartLaunchHidden,
     void Function(BuildContext)? onToggleShowInContextMenu,
@@ -390,14 +327,10 @@ class _SettingsTabVmCopyWithImpl<$R, $Out>
       if (settings != null) #settings: settings,
       if (serverState != $none) #serverState: serverState,
       if (deviceInfo != null) #deviceInfo: deviceInfo,
-      if (colorModes != null) #colorModes: colorModes,
       if (autoStart != null) #autoStart: autoStart,
       if (autoStartLaunchHidden != null)
         #autoStartLaunchHidden: autoStartLaunchHidden,
       if (showInContextMenu != null) #showInContextMenu: showInContextMenu,
-      if (onChangeTheme != null) #onChangeTheme: onChangeTheme,
-      if (onChangeColorMode != null) #onChangeColorMode: onChangeColorMode,
-      if (onTapLanguage != null) #onTapLanguage: onTapLanguage,
       if (onToggleAutoStart != null) #onToggleAutoStart: onToggleAutoStart,
       if (onToggleAutoStartLaunchHidden != null)
         #onToggleAutoStartLaunchHidden: onToggleAutoStartLaunchHidden,
@@ -429,7 +362,6 @@ class _SettingsTabVmCopyWithImpl<$R, $Out>
     settings: data.get(#settings, or: $value.settings),
     serverState: data.get(#serverState, or: $value.serverState),
     deviceInfo: data.get(#deviceInfo, or: $value.deviceInfo),
-    colorModes: data.get(#colorModes, or: $value.colorModes),
     autoStart: data.get(#autoStart, or: $value.autoStart),
     autoStartLaunchHidden: data.get(
       #autoStartLaunchHidden,
@@ -439,12 +371,6 @@ class _SettingsTabVmCopyWithImpl<$R, $Out>
       #showInContextMenu,
       or: $value.showInContextMenu,
     ),
-    onChangeTheme: data.get(#onChangeTheme, or: $value.onChangeTheme),
-    onChangeColorMode: data.get(
-      #onChangeColorMode,
-      or: $value.onChangeColorMode,
-    ),
-    onTapLanguage: data.get(#onTapLanguage, or: $value.onTapLanguage),
     onToggleAutoStart: data.get(
       #onToggleAutoStart,
       or: $value.onToggleAutoStart,

@@ -31,11 +31,6 @@ class SendingFileMapper extends ClassMapperBase<SendingFile> {
     'thumbnail',
     _$thumbnail,
   );
-  static AssetEntity? _$asset(SendingFile v) => v.asset;
-  static const Field<SendingFile, AssetEntity> _f$asset = Field(
-    'asset',
-    _$asset,
-  );
   static String? _$path(SendingFile v) => v.path;
   static const Field<SendingFile, String> _f$path = Field('path', _$path);
   static List<int>? _$bytes(SendingFile v) => v.bytes;
@@ -51,7 +46,6 @@ class SendingFileMapper extends ClassMapperBase<SendingFile> {
     #file: _f$file,
     #token: _f$token,
     #thumbnail: _f$thumbnail,
-    #asset: _f$asset,
     #path: _f$path,
     #bytes: _f$bytes,
     #errorMessage: _f$errorMessage,
@@ -62,7 +56,6 @@ class SendingFileMapper extends ClassMapperBase<SendingFile> {
       file: data.dec(_f$file),
       token: data.dec(_f$token),
       thumbnail: data.dec(_f$thumbnail),
-      asset: data.dec(_f$asset),
       path: data.dec(_f$path),
       bytes: data.dec(_f$bytes),
       errorMessage: data.dec(_f$errorMessage),
@@ -134,7 +127,6 @@ abstract class SendingFileCopyWith<$R, $In extends SendingFile, $Out>
     FileDto? file,
     String? token,
     Uint8List? thumbnail,
-    AssetEntity? asset,
     String? path,
     List<int>? bytes,
     String? errorMessage,
@@ -164,7 +156,6 @@ class _SendingFileCopyWithImpl<$R, $Out>
     FileDto? file,
     Object? token = $none,
     Object? thumbnail = $none,
-    Object? asset = $none,
     Object? path = $none,
     Object? bytes = $none,
     Object? errorMessage = $none,
@@ -173,7 +164,6 @@ class _SendingFileCopyWithImpl<$R, $Out>
       if (file != null) #file: file,
       if (token != $none) #token: token,
       if (thumbnail != $none) #thumbnail: thumbnail,
-      if (asset != $none) #asset: asset,
       if (path != $none) #path: path,
       if (bytes != $none) #bytes: bytes,
       if (errorMessage != $none) #errorMessage: errorMessage,
@@ -184,7 +174,6 @@ class _SendingFileCopyWithImpl<$R, $Out>
     file: data.get(#file, or: $value.file),
     token: data.get(#token, or: $value.token),
     thumbnail: data.get(#thumbnail, or: $value.thumbnail),
-    asset: data.get(#asset, or: $value.asset),
     path: data.get(#path, or: $value.path),
     bytes: data.get(#bytes, or: $value.bytes),
     errorMessage: data.get(#errorMessage, or: $value.errorMessage),

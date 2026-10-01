@@ -111,6 +111,11 @@ class MainActivity : FlutterActivity() {
                     result.success(null)
                 }
 
+                "openAppSettings" -> {
+                    startActivity(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName")))
+                    result.success(null)
+                }
+
                 "openGallery" -> {
                     openGallery()
                     result.success(null)

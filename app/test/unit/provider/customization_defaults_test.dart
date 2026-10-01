@@ -9,12 +9,7 @@ void main() {
   setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.android);
   tearDown(() => debugDefaultTargetPlatformOverride = null);
 
-  Map<String, Object> seed({int? version}) => {
-    if (version != null) 'ls_version': version,
-    'ls_alias': 'Device',
-    'ls_show_token': 'token',
-    'ls_security_context': '{}',
-  };
+  Map<String, Object> seed({int? version}) => {'ls_version': ?version, 'ls_alias': 'Device', 'ls_show_token': 'token', 'ls_security_context': '{}'};
 
   test('Fresh settings enable quick save and auto finish without requiring a PIN', () async {
     SharedPreferences.setMockInitialValues(seed());

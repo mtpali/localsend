@@ -1,4 +1,3 @@
-import 'package:localsend_app/widget/static_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/pages/receive_page.dart';
@@ -12,6 +11,7 @@ import 'package:localsend_app/widget/custom_icon_button.dart';
 import 'package:localsend_app/widget/dialogs/file_name_input_dialog.dart';
 import 'package:localsend_app/widget/dialogs/quick_actions_dialog.dart';
 import 'package:localsend_app/widget/responsive_list_view.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/util/file_size_helper.dart';
 import 'package:refena_flutter/refena_flutter.dart';
 

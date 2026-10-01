@@ -1,5 +1,5 @@
-import 'package:localsend_app/widget/static_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 
 class LabeledCheckbox extends StatelessWidget {
   final String label;

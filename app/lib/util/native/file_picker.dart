@@ -1,4 +1,3 @@
-import 'package:localsend_app/widget/static_controls.dart';
 import 'dart:async';
 
 import 'package:file_selector/file_selector.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:localsend_app/config/theme.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/model/cross_file.dart';
 import 'package:localsend_app/pages/apk_picker_page.dart';
@@ -21,6 +19,7 @@ import 'package:localsend_app/util/native/platform_check.dart';
 import 'package:localsend_app/widget/dialogs/loading_dialog.dart';
 import 'package:localsend_app/widget/dialogs/message_input_dialog.dart';
 import 'package:localsend_app/widget/dialogs/no_permission_dialog.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/model/file_type.dart';
 import 'package:localsend_isolates/util/file_path_helper.dart';
 import 'package:localsend_isolates/util/sleep.dart';
@@ -40,7 +39,8 @@ enum FilePickerOption {
   media(Icons.image),
   text(Icons.subject),
   app(Icons.apps),
-  clipboard(Icons.paste);
+  clipboard(Icons.paste)
+  ;
 
   const FilePickerOption(this.icon);
 

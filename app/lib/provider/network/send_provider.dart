@@ -1,7 +1,6 @@
-import 'package:localsend_app/widget/static_controls.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:localsend_app/model/cross_file.dart';
 import 'package:localsend_app/model/send_mode.dart';
 import 'package:localsend_app/model/state/send/send_session_state.dart';
@@ -16,6 +15,7 @@ import 'package:localsend_app/provider/http_provider.dart';
 import 'package:localsend_app/provider/selection/selected_sending_files_provider.dart';
 import 'package:localsend_app/provider/settings_provider.dart';
 import 'package:localsend_app/widget/dialogs/pin_dialog.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/isolate.dart';
 import 'package:localsend_isolates/model/device.dart';
 import 'package:localsend_isolates/model/dto/file_dto.dart';

@@ -94,7 +94,7 @@ class FetchLocalIpAction extends AsyncReduxAction<LocalIpService, NetworkState> 
   @override
   void after() {
     if (notifyDiscovery && (forceRefresh || _changed)) {
-      unawaited(ref.read(discoveryLifecycleProvider).refresh());
+      unawaited(notifier.ref.read(discoveryLifecycleProvider).refresh());
     }
   }
 }

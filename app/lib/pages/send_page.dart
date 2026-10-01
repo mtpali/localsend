@@ -1,5 +1,3 @@
-import 'package:localsend_app/widget/custom_progress_bar.dart';
-import 'package:localsend_app/widget/static_controls.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -11,9 +9,11 @@ import 'package:localsend_app/provider/device_info_provider.dart';
 import 'package:localsend_app/provider/file_transfer_provider.dart';
 import 'package:localsend_app/provider/network/send_provider.dart';
 import 'package:localsend_app/util/native/taskbar_helper.dart';
+import 'package:localsend_app/widget/custom_progress_bar.dart';
 import 'package:localsend_app/widget/dialogs/error_dialog.dart';
 import 'package:localsend_app/widget/list_tile/device_list_tile.dart';
 import 'package:localsend_app/widget/responsive_list_view.dart';
+import 'package:localsend_app/widget/static_controls.dart';
 import 'package:localsend_isolates/model/device.dart';
 import 'package:localsend_isolates/model/session_status.dart';
 import 'package:refena_flutter/addons.dart';

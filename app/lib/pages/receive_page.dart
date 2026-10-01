@@ -8,7 +8,6 @@ import 'package:localsend_app/pages/receive_options_page.dart';
 import 'package:localsend_app/pages/verify_page.dart';
 import 'package:localsend_app/pages/web_share_page.dart';
 import 'package:localsend_app/provider/selection/selected_receiving_files_provider.dart';
-import 'package:localsend_app/provider/settings_provider.dart';
 import 'package:localsend_app/util/device_type_ext.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
 import 'package:localsend_app/util/native/taskbar_helper.dart';

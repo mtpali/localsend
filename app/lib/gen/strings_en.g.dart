@@ -50,7 +50,6 @@ class Translations with BaseTranslations<AppLocale, Translations> {
   late final Translations$receiveTab$en receiveTab = Translations$receiveTab$en.internal(_root);
   late final Translations$sendTab$en sendTab = Translations$sendTab$en.internal(_root);
   late final Translations$settingsTab$en settingsTab = Translations$settingsTab$en.internal(_root);
-  late final Translations$troubleshootPage$en troubleshootPage = Translations$troubleshootPage$en.internal(_root);
   late final Translations$networkInterfacesPage$en networkInterfacesPage = Translations$networkInterfacesPage$en.internal(_root);
   late final Translations$receiveHistoryPage$en receiveHistoryPage = Translations$receiveHistoryPage$en.internal(_root);
   late final Translations$apkPickerPage$en apkPickerPage = Translations$apkPickerPage$en.internal(_root);
@@ -63,10 +62,6 @@ class Translations with BaseTranslations<AppLocale, Translations> {
   late final Translations$progressPage$en progressPage = Translations$progressPage$en.internal(_root);
   late final Translations$webSharePage$en webSharePage = Translations$webSharePage$en.internal(_root);
   late final Translations$webReceivePage$en webReceivePage = Translations$webReceivePage$en.internal(_root);
-  late final Translations$aboutPage$en aboutPage = Translations$aboutPage$en.internal(_root);
-  late final Translations$donationPage$en donationPage = Translations$donationPage$en.internal(_root);
-  late final Translations$changelogPage$en changelogPage = Translations$changelogPage$en.internal(_root);
-  late final Translations$whatsNewPage$en whatsNewPage = Translations$whatsNewPage$en.internal(_root);
   late final Translations$aliasGenerator$en aliasGenerator = Translations$aliasGenerator$en.internal(_root);
   late final Translations$dialogs$en dialogs = Translations$dialogs$en.internal(_root);
   late final Translations$sanitization$en sanitization = Translations$sanitization$en.internal(_root);
@@ -160,9 +155,6 @@ class Translations$general$en {
 
   /// en: 'Quick Save'
   String get quickSave => 'Quick Save';
-
-  /// en: 'Quick Save for "Favorites"'
-  String get quickSaveFromFavorites => 'Quick Save for "Favorites"';
 
   /// en: 'Renamed'
   String get renamed => 'Renamed';
@@ -281,31 +273,6 @@ class Translations$settingsTab$en {
   String get advancedSettings => 'Advanced settings';
 }
 
-// Path: troubleshootPage
-class Translations$troubleshootPage$en {
-  Translations$troubleshootPage$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Troubleshoot'
-  String get title => 'Troubleshoot';
-
-  /// en: 'Does the app not work as expected? Here you can find some common solutions to problems.'
-  String get subTitle => 'Does the app not work as expected? Here you can find some common solutions to problems.';
-
-  /// en: 'Solution:'
-  String get solution => 'Solution:';
-
-  /// en: 'Fix automatically'
-  String get fixButton => 'Fix automatically';
-
-  late final Translations$troubleshootPage$firewall$en firewall = Translations$troubleshootPage$firewall$en.internal(_root);
-  late final Translations$troubleshootPage$noDiscovery$en noDiscovery = Translations$troubleshootPage$noDiscovery$en.internal(_root);
-  late final Translations$troubleshootPage$noConnection$en noConnection = Translations$troubleshootPage$noConnection$en.internal(_root);
-}
-
 // Path: networkInterfacesPage
 class Translations$networkInterfacesPage$en {
   Translations$networkInterfacesPage$en.internal(this._root);
@@ -398,9 +365,6 @@ class Translations$deviceDetailsPage$en {
   /// en: 'Device Details'
   String get title => 'Device Details';
 
-  /// en: 'Favorite'
-  String get favorite => 'Favorite';
-
   /// en: 'Verify'
   String get verify => 'Verify';
 
@@ -438,8 +402,11 @@ class Translations$receivePage$en {
   // Translations
 
   /// en: '(one) {wants to send you a file} (other) {wants to send you {n} files}'
-  String subTitle({required num n}) =>
-      (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: 'wants to send you a file', other: 'wants to send you ${n} files');
+  String subTitle({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(
+    n,
+    one: 'wants to send you a file',
+    other: 'wants to send you ${n} files',
+  );
 
   /// en: 'sent you a message:'
   String get subTitleMessage => 'sent you a message:';
@@ -584,85 +551,6 @@ class Translations$webReceivePage$en {
   String get title => 'Receive via link';
 }
 
-// Path: aboutPage
-class Translations$aboutPage$en {
-  Translations$aboutPage$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'About LocalSend'
-  String get title => 'About LocalSend';
-
-  List<String> get description => [
-    'LocalSend is a free, open-source app that allows you to securely share files and messages with nearby devices over your local network without needing an internet connection.',
-    'This app is available on Android, iOS, macOS, Windows and Linux. You can find all download options on the official homepage.',
-  ];
-
-  /// en: 'Author'
-  String get author => 'Author';
-
-  /// en: 'Contributors'
-  String get contributors => 'Contributors';
-
-  /// en: 'Packagers'
-  String get packagers => 'Packagers';
-
-  /// en: 'Translators'
-  String get translators => 'Translators';
-}
-
-// Path: donationPage
-class Translations$donationPage$en {
-  Translations$donationPage$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Donate'
-  String get title => 'Donate';
-
-  /// en: 'LocalSend is free, open-source and without any ads. If you like the app, you can support the development with a donation.'
-  String get info => 'LocalSend is free, open-source and without any ads. If you like the app, you can support the development with a donation.';
-
-  /// en: 'Donate {amount}'
-  String donate({required Object amount}) => 'Donate ${amount}';
-
-  /// en: 'Thank you very much!'
-  String get thanks => 'Thank you very much!';
-
-  /// en: 'Restore purchase'
-  String get restore => 'Restore purchase';
-}
-
-// Path: changelogPage
-class Translations$changelogPage$en {
-  Translations$changelogPage$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Changelog'
-  String get title => 'Changelog';
-}
-
-// Path: whatsNewPage
-class Translations$whatsNewPage$en {
-  Translations$whatsNewPage$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'What's new in {version}'
-  String title({required Object version}) => 'What\'s new in ${version}';
-
-  late final Translations$whatsNewPage$changes$en changes = Translations$whatsNewPage$changes$en.internal(_root);
-}
-
 // Path: aliasGenerator
 class Translations$aliasGenerator$en {
   Translations$aliasGenerator$en.internal(this._root);
@@ -761,9 +649,6 @@ class Translations$dialogs$en {
     _root,
   );
   late final Translations$dialogs$errorDialog$en errorDialog = Translations$dialogs$errorDialog$en.internal(_root);
-  late final Translations$dialogs$favoriteDialog$en favoriteDialog = Translations$dialogs$favoriteDialog$en.internal(_root);
-  late final Translations$dialogs$favoriteDeleteDialog$en favoriteDeleteDialog = Translations$dialogs$favoriteDeleteDialog$en.internal(_root);
-  late final Translations$dialogs$favoriteEditDialog$en favoriteEditDialog = Translations$dialogs$favoriteEditDialog$en.internal(_root);
   late final Translations$dialogs$fileInfo$en fileInfo = Translations$dialogs$fileInfo$en.internal(_root);
   late final Translations$dialogs$fileNameInput$en fileNameInput = Translations$dialogs$fileNameInput$en.internal(_root);
   late final Translations$dialogs$historyClearDialog$en historyClearDialog = Translations$dialogs$historyClearDialog$en.internal(_root);
@@ -777,8 +662,6 @@ class Translations$dialogs$en {
   late final Translations$dialogs$qr$en qr = Translations$dialogs$qr$en.internal(_root);
   late final Translations$dialogs$quickActions$en quickActions = Translations$dialogs$quickActions$en.internal(_root);
   late final Translations$dialogs$quickSaveNotice$en quickSaveNotice = Translations$dialogs$quickSaveNotice$en.internal(_root);
-  late final Translations$dialogs$quickSaveFromFavoritesNotice$en quickSaveFromFavoritesNotice =
-      Translations$dialogs$quickSaveFromFavoritesNotice$en.internal(_root);
   late final Translations$dialogs$pin$en pin = Translations$dialogs$pin$en.internal(_root);
   late final Translations$dialogs$sendModeHelp$en sendModeHelp = Translations$dialogs$sendModeHelp$en.internal(_root);
   late final Translations$dialogs$zoom$en zoom = Translations$dialogs$zoom$en.internal(_root);
@@ -973,9 +856,6 @@ class Translations$receiveTab$quickSave$en {
   /// en: 'Off'
   String get off => _root.general.off;
 
-  /// en: 'Favorites'
-  String get favorites => 'Favorites';
-
   /// en: 'On'
   String get on => _root.general.on;
 }
@@ -1054,25 +934,6 @@ class Translations$settingsTab$general$en {
   /// en: 'General'
   String get title => 'General';
 
-  /// en: 'Theme'
-  String get brightness => 'Theme';
-
-  late final Translations$settingsTab$general$brightnessOptions$en brightnessOptions = Translations$settingsTab$general$brightnessOptions$en.internal(
-    _root,
-  );
-
-  /// en: 'Color'
-  String get color => 'Color';
-
-  late final Translations$settingsTab$general$colorOptions$en colorOptions = Translations$settingsTab$general$colorOptions$en.internal(_root);
-
-  /// en: 'Language'
-  String get language => 'Language';
-
-  late final Translations$settingsTab$general$languageOptions$en languageOptions = Translations$settingsTab$general$languageOptions$en.internal(
-    _root,
-  );
-
   /// en: 'Save window position after quit'
   String get saveWindowPlacement => 'Save window position after quit';
 
@@ -1090,9 +951,6 @@ class Translations$settingsTab$general$en {
 
   /// en: 'Show LocalSend in context menu'
   String get showInContextMenu => 'Show LocalSend in context menu';
-
-  /// en: 'Animations'
-  String get animations => 'Animations';
 }
 
 // Path: settingsTab.receive
@@ -1108,9 +966,6 @@ class Translations$settingsTab$receive$en {
 
   /// en: 'Quick Save'
   String get quickSave => _root.general.quickSave;
-
-  /// en: 'Quick Save for "Favorites"'
-  String get quickSaveFromFavorites => _root.general.quickSaveFromFavorites;
 
   /// en: 'Require PIN'
   String get requirePin => _root.webSharePage.requirePin;
@@ -1220,69 +1075,6 @@ class Translations$settingsTab$other$en {
 
   /// en: 'Other'
   String get title => 'Other';
-
-  /// en: 'Support LocalSend'
-  String get support => 'Support LocalSend';
-
-  /// en: 'Donate'
-  String get donate => 'Donate';
-
-  /// en: 'Privacy Policy'
-  String get privacyPolicy => 'Privacy Policy';
-
-  /// en: 'Terms of Use'
-  String get termsOfUse => 'Terms of Use';
-}
-
-// Path: troubleshootPage.firewall
-class Translations$troubleshootPage$firewall$en {
-  Translations$troubleshootPage$firewall$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'This device can send files to other devices but other devices cannot send files to this device.'
-  String get symptom => 'This device can send files to other devices but other devices cannot send files to this device.';
-
-  /// en: 'This is most likely a firewall issue. You can solve this by allowing incoming connections (UDP and TCP) on port {port}.'
-  String solution({required Object port}) =>
-      'This is most likely a firewall issue. You can solve this by allowing incoming connections (UDP and TCP) on port ${port}.';
-
-  /// en: 'Open Firewall'
-  String get openFirewall => 'Open Firewall';
-}
-
-// Path: troubleshootPage.noDiscovery
-class Translations$troubleshootPage$noDiscovery$en {
-  Translations$troubleshootPage$noDiscovery$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'This device cannot discover other devices.'
-  String get symptom => 'This device cannot discover other devices.';
-
-  /// en: 'Please make sure that all devices are on the same Wi-Fi network and share the same configuration (port, multicast address, encryption). You can try to type the IP address of the target device manually. If this works, consider adding this device to the favorites so it can be automatically discovered in the future.'
-  String get solution =>
-      'Please make sure that all devices are on the same Wi-Fi network and share the same configuration (port, multicast address, encryption). You can try to type the IP address of the target device manually. If this works, consider adding this device to the favorites so it can be automatically discovered in the future.';
-}
-
-// Path: troubleshootPage.noConnection
-class Translations$troubleshootPage$noConnection$en {
-  Translations$troubleshootPage$noConnection$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Both devices cannot discover each other nor can they share files.'
-  String get symptom => 'Both devices cannot discover each other nor can they share files.';
-
-  /// en: 'Does the problem exist on both sides? If so, you need to make sure that both devices are on the same Wi-Fi network and share the same configuration (port, multicast address, encryption). The Wi-Fi network may not allow communication between participants due to Access Point (AP) Isolation. In this case, this option must be disabled on the router.'
-  String get solution =>
-      'Does the problem exist on both sides? If so, you need to make sure that both devices are on the same Wi-Fi network and share the same configuration (port, multicast address, encryption). The Wi-Fi network may not allow communication between participants due to Access Point (AP) Isolation. In this case, this option must be disabled on the router.';
 }
 
 // Path: receiveHistoryPage.entryActions
@@ -1376,10 +1168,16 @@ class Translations$progressPage$remainingTime$en {
   // Translations
 
   /// en: '(other) {{m}m}'
-  String minutesUnit({required num m}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(m, other: '${m}m');
+  String minutesUnit({required num m}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(
+    m,
+    other: '${m}m',
+  );
 
   /// en: '(other) {{h}h}'
-  String hoursUnit({required num h}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(h, other: '${h}h');
+  String hoursUnit({required num h}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(
+    h,
+    other: '${h}h',
+  );
 
   /// en: '{m}:{ss}'
   String minutes({required Object m, required Object ss}) => '${m}:${ss}';
@@ -1387,16 +1185,6 @@ class Translations$progressPage$remainingTime$en {
   /// en: '(other) {{h}h} (other) {{m}m}'
   String hours({required num h, required num m}) =>
       '${_root.progressPage.remainingTime.hoursUnit(h: h)} ${_root.progressPage.remainingTime.minutesUnit(m: m)}';
-}
-
-// Path: whatsNewPage.changes
-class Translations$whatsNewPage$changes$en {
-  Translations$whatsNewPage$changes$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-  late final Translations$whatsNewPage$changes$v1_18_0$en v1_18_0 = Translations$whatsNewPage$changes$v1_18_0$en.internal(_root);
 }
 
 // Path: dialogs.addFile
@@ -1499,66 +1287,6 @@ class Translations$dialogs$errorDialog$en {
 
   /// en: 'Error'
   String get title => _root.general.error;
-}
-
-// Path: dialogs.favoriteDialog
-class Translations$dialogs$favoriteDialog$en {
-  Translations$dialogs$favoriteDialog$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Favorites'
-  String get title => 'Favorites';
-
-  /// en: 'No favorite devices yet.'
-  String get noFavorites => 'No favorite devices yet.';
-
-  /// en: 'Add'
-  String get addFavorite => 'Add';
-}
-
-// Path: dialogs.favoriteDeleteDialog
-class Translations$dialogs$favoriteDeleteDialog$en {
-  Translations$dialogs$favoriteDeleteDialog$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Delete from favorites'
-  String get title => 'Delete from favorites';
-
-  /// en: 'Do you really want to delete from favorites "{name}"?'
-  String content({required Object name}) => 'Do you really want to delete from favorites "${name}"?';
-}
-
-// Path: dialogs.favoriteEditDialog
-class Translations$dialogs$favoriteEditDialog$en {
-  Translations$dialogs$favoriteEditDialog$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Add to favorites'
-  String get titleAdd => 'Add to favorites';
-
-  /// en: 'Settings'
-  String get titleEdit => 'Settings';
-
-  /// en: 'Device name'
-  String get name => 'Device name';
-
-  /// en: '(auto)'
-  String get auto => '(auto)';
-
-  /// en: 'IP Address'
-  String get ip => 'IP Address';
-
-  /// en: 'Port'
-  String get port => 'Port';
 }
 
 // Path: dialogs.fileInfo
@@ -1751,20 +1479,6 @@ class Translations$dialogs$quickSaveNotice$en {
   String get content => 'File requests are now accepted automatically. Be aware that everyone on the local network can send you files.';
 }
 
-// Path: dialogs.quickSaveFromFavoritesNotice
-class Translations$dialogs$quickSaveFromFavoritesNotice$en {
-  Translations$dialogs$quickSaveFromFavoritesNotice$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Quick Save for "Favorites"'
-  String get title => _root.general.quickSaveFromFavorites;
-
-  List<String> get content => ['File requests are now accepted automatically from devices in your favorites list.'];
-}
-
 // Path: dialogs.pin
 class Translations$dialogs$pin$en {
   Translations$dialogs$pin$en.internal(this._root);
@@ -1810,54 +1524,6 @@ class Translations$dialogs$zoom$en {
   String get title => 'URL';
 }
 
-// Path: settingsTab.general.brightnessOptions
-class Translations$settingsTab$general$brightnessOptions$en {
-  Translations$settingsTab$general$brightnessOptions$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'System'
-  String get system => 'System';
-
-  /// en: 'Dark'
-  String get dark => 'Dark';
-
-  /// en: 'Light'
-  String get light => 'Light';
-}
-
-// Path: settingsTab.general.colorOptions
-class Translations$settingsTab$general$colorOptions$en {
-  Translations$settingsTab$general$colorOptions$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'System'
-  String get system => 'System';
-
-  /// en: 'OLED'
-  String get oled => 'OLED';
-
-  /// en: 'Custom'
-  String get custom => 'Custom';
-}
-
-// Path: settingsTab.general.languageOptions
-class Translations$settingsTab$general$languageOptions$en {
-  Translations$settingsTab$general$languageOptions$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'System'
-  String get system => 'System';
-}
-
 // Path: settingsTab.network.networkOptions
 class Translations$settingsTab$network$networkOptions$en {
   Translations$settingsTab$network$networkOptions$en.internal(this._root);
@@ -1892,19 +1558,4 @@ class Translations$progressPage$total$title$en {
 
   /// en: 'Canceled by receiver'
   String get canceledReceiver => 'Canceled by receiver';
-}
-
-// Path: whatsNewPage.changes.v1_18_0
-class Translations$whatsNewPage$changes$v1_18_0$en with WhatsNewStrings {
-  Translations$whatsNewPage$changes$v1_18_0$en.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-  @override
-  List<String> get changes => [
-    'Encryption no longer slows down transfers. It has been re-enabled on this device if you turned it off before.',
-    'Requests from favorites are now accepted automatically. This is turned on by default and can be disabled in the settings.',
-    'On Android, transfers continue while the app is in the background or the screen is off. On iOS, the app must still stay in the foreground.',
-  ];
 }
