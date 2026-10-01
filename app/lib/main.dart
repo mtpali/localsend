@@ -69,6 +69,7 @@ class LocalSendApp extends StatelessWidget {
               theme: getOledTheme(),
               themeMode: ThemeMode.dark,
               themeAnimationDuration: Duration.zero,
+              scrollBehavior: const MaterialScrollBehavior().copyWith(overscroll: false, scrollbars: false),
               builder: (context, child) => MediaQuery(
                 data: MediaQuery.of(context).copyWith(disableAnimations: true),
                 child: TooltipVisibility(visible: false, child: HeroControllerScope.none(child: child!)),

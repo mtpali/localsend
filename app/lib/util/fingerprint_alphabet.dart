@@ -87,7 +87,7 @@ const iconAlphabet = <IconData>[
   Icons.face,
   Icons.factory,
   Icons.fastfood,
-  Icons.circle,
+  Icons.favorite,
   Icons.fence,
   Icons.festival,
   Icons.fingerprint,

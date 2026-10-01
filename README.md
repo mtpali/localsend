@@ -2,7 +2,7 @@
 
 Customized from [LocalSend v1.18.2](https://github.com/localsend/localsend/releases/tag/v1.18.2), upstream commit `af0416be50770a97760f7070684bc667b759a15c`.
 
-The Android app uses one black-and-white OLED theme and English only. Favorites, troubleshooting, donation, changelog, startup graphics, and application animations are removed. Fresh installations enable Quick Save and Auto Finish and leave the receive PIN disabled. The requested contact link opens from Settings.
+The Android app uses one black-and-white OLED theme and English only. Favorites, troubleshooting, donation, changelog, startup graphics, and application animations are removed. Fresh installations enable Quick Save and Auto Finish and leave the receive PIN disabled. The requested contact link opens from Settings. The internal gallery is retained with album browsing, ordered multi-selection, image previews, and video selection. It pages 80 media records at a time, decodes only visible 192px thumbnails, retains the bounded native thumbnail disk cache, and resolves original files only after confirmation. Android decoded-image caching is capped at 32 MiB.
 
 Networking waits for discovery readiness, recovers multicast sockets after resume/network/IP changes, acquires the Android Wi-Fi multicast lock, serializes overlapping recovery requests, and clears old peers after a network rebind. The HTTP listener is probed before recovery so healthy ongoing transfers are preserved.
 
@@ -20,7 +20,7 @@ Source generators are mandatory after checkout: first run `flutter_rust_bridge_c
 
 ## Verification
 
-Automated tests cover defaults and migration of removed settings. Physical-device checks remain necessary for Wi-Fi switching, Android Share Intents, background transfer, and both ARM architectures. Passing static or CI checks does not substitute for these hardware tests.
+Automated tests cover defaults, migration of removed settings, serialized network recovery, and gallery pagination races/retries. Physical-device checks remain necessary for Wi-Fi switching, Android Share Intents, background transfer, and both ARM architectures. Passing static or CI checks does not substitute for these hardware tests.
 
 ## Attribution and license
 

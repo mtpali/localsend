@@ -8,11 +8,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/model/cross_file.dart';
 import 'package:localsend_app/pages/apk_picker_page.dart';
+import 'package:localsend_app/pages/internal_gallery_page.dart';
 import 'package:localsend_app/provider/device_info_provider.dart';
 import 'package:localsend_app/provider/selection/selected_sending_files_provider.dart';
 import 'package:localsend_app/util/determine_image_type.dart';
 import 'package:localsend_app/util/image_converter.dart';
 import 'package:localsend_app/util/native/channel/android_channel.dart' as android_channel;
+import 'package:localsend_app/util/native/cache_helper.dart';
 import 'package:localsend_app/util/native/cross_file_converters.dart';
 import 'package:localsend_app/util/native/pick_directory_path.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
@@ -39,8 +41,7 @@ enum FilePickerOption {
   media(Icons.image),
   text(Icons.subject),
   app(Icons.apps),
-  clipboard(Icons.paste)
-  ;
+  clipboard(Icons.paste);
 
   const FilePickerOption(this.icon);
 
@@ -206,11 +207,11 @@ Future<void> _pickFolder(BuildContext context, Ref ref) async {
 }
 
 Future<void> _pickMedia(BuildContext context, Ref ref) async {
-  // The system media picker avoids a second gallery implementation, its
-  // translations, animations, album indexing and broad media permissions.
-  final result = await ImagePicker().pickMultipleMedia();
-  if (result.isNotEmpty) {
-    await ref.redux(selectedSendingFilesProvider).dispatchAsync(AddFilesAction(files: result, converter: CrossFileConverters.convertXFile));
+  await waitForPickerCacheCleanup();
+  if (!context.mounted) return;
+  final result = await pickInternalGallery(context);
+  if (result != null && result.isNotEmpty) {
+    await ref.redux(selectedSendingFilesProvider).dispatchAsync(AddFilesAction(files: result, converter: CrossFileConverters.convertAssetEntity));
   }
 }
 

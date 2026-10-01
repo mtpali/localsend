@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
@@ -8,10 +9,33 @@ import 'package:localsend_app/util/native/channel/android_channel.dart' as andro
 import 'package:localsend_isolates/model/file_type.dart';
 import 'package:localsend_isolates/rust/api/metadata.dart';
 import 'package:localsend_isolates/util/file_path_helper.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:share_handler/share_handler.dart';
 
 /// Utility functions to convert third party models to common [CrossFile] model.
 class CrossFileConverters {
+  static Future<CrossFile> convertAssetEntity(AssetEntity asset) async {
+    final file = await asset.originFile;
+    if (file == null) throw StateError('Selected media is no longer available');
+    final metadata = await readFileMetadata(path: file.path);
+    Uint8List? thumbnail;
+    try {
+      thumbnail = await asset.thumbnailDataWithSize(const ThumbnailSize.square(96), quality: 70);
+    } catch (_) {
+      // A missing preview must not stop an otherwise readable file transfer.
+    }
+    return CrossFile(
+      name: await asset.titleAsync,
+      fileType: asset.type == AssetType.video ? FileType.video : FileType.image,
+      size: await file.length(),
+      thumbnail: thumbnail,
+      path: file.path,
+      bytes: null,
+      lastModified: metadata?.modified,
+      lastAccessed: metadata?.accessed,
+    );
+  }
+
   static Future<CrossFile> convertXFile(XFile file) async {
     final metadata = kIsWeb ? null : await readFileMetadata(path: file.path);
     return CrossFile(

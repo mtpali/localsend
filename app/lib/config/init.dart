@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:localsend_app/config/refena.dart';
@@ -50,6 +51,13 @@ final _logger = Logger('Init');
 /// Will be called before the MaterialApp started
 Future<RefenaContainer> preInit(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (checkPlatform([TargetPlatform.android])) {
+    // Bound decoded thumbnail memory while keeping recent gallery pages warm.
+    PaintingBinding.instance.imageCache
+      ..maximumSize = 160
+      ..maximumSizeBytes = 32 * 1024 * 1024;
+  }
 
   initLogger(args.contains('-v') || args.contains('--verbose') ? Level.ALL : Level.INFO);
   MapperContainer.globals.use(const FileDtoMapper());

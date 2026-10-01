@@ -14,6 +14,10 @@ import 'package:path_provider_foundation/path_provider_foundation.dart';
 import 'package:refena_flutter/refena_flutter.dart';
 
 final _logger = Logger('ClearCacheAction');
+Future<void> _pickerCacheCleanup = Future<void>.value();
+
+/// Don't resolve new gallery files while startup is deleting old export files.
+Future<void> waitForPickerCacheCleanup() => _pickerCacheCleanup;
 
 /// Clears the cache.
 /// It runs on a separate isolate to avoid blocking the UI.
@@ -22,7 +26,9 @@ class ClearCacheAction extends AsyncGlobalAction {
   Future<void> reduce() async {
     // The token statement must be outside the lambda because it must be executed on the root isolate.
     final token = ServicesBinding.rootIsolateToken!;
-    await Isolate.run(() => _clear(token));
+    final cleanup = Isolate.run(() => _clear(token));
+    _pickerCacheCleanup = cleanup;
+    await cleanup;
   }
 }
 
@@ -33,14 +39,18 @@ Future<void> _clear(RootIsolateToken token) async {
   final futures = (
     FilePicker.clearTemporaryFiles(),
     checkPlatform([TargetPlatform.iOS, TargetPlatform.android])
-        ? getTemporaryDirectory().then((cacheDir) {
-            cacheDir.list().listen((event) {
+        ? getTemporaryDirectory().then((cacheDir) async {
+            // Gallery's bounded native thumbnail cache is in a subdirectory;
+            // keep it warm and remove only old exported temporary files.
+            await for (final event in cacheDir.list(followLinks: false)) {
               if (event is File) {
-                event.delete().then((_) {}).catchError((error) {
+                try {
+                  await event.delete();
+                } catch (error) {
                   _logger.warning('Failed to delete file: $error');
-                });
+                }
               }
-            });
+            }
           })
         : Future.value(),
     checkPlatform([TargetPlatform.iOS])
