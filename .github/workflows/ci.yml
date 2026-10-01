@@ -74,7 +74,7 @@ jobs:
         run: cargo build --package rust_lib_localsend_app
       - name: Application regression tests
         working-directory: app
-        run: flutter test
+        run: flutter test --dart-define=EXPORT_MEDIA_QUERY=true
       - name: Isolate regression tests
         working-directory: packages/localsend_isolates
         run: flutter test
@@ -129,6 +129,12 @@ jobs:
         run: |
           flutter pub get
           flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64 --obfuscate --split-debug-info=build/symbols
+      - name: Export the real gallery query for Android regression tests
+        working-directory: app
+        run: flutter test test/unit/pages/internal_gallery_page_test.dart --dart-define=EXPORT_MEDIA_QUERY=true
+      - name: Android MediaStore and SQLite regression tests
+        working-directory: app/android
+        run: ./gradlew :app:testReleaseUnitTest --tests org.localsend.localsend_app.GalleryMediaStoreTest -Ptarget-platform=android-arm,android-arm64
       - name: Verify architectures, shrinking, and removed assets
         run: python3 support/scripts/verify_android_apks.py
       - uses: actions/upload-artifact@v6

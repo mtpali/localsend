@@ -38,6 +38,11 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.resources.srcDirs += '../../build/gallery-tests'
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
     }
 
     defaultConfig {
@@ -104,6 +109,11 @@ android {
 
 flutter {
     source '../..'
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
 }
 
 // To comply with F-Droid version code schema

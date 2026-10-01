@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:localsend_app/util/gallery_pager.dart';
+import 'package:localsend_app/util/gallery_query.dart';
 import 'package:localsend_app/util/ui/snackbar.dart';
 import 'package:localsend_app/widget/static_controls.dart';
 import 'package:logging/logging.dart';
@@ -45,6 +48,7 @@ class InternalGalleryPage extends StatefulWidget {
 
 class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsBindingObserver {
   late final _pager = GalleryPager<AssetEntity>(pageSize: _pageSize, onChanged: _rebuild);
+  late final _queryOptions = galleryQueryOptions();
   final _scrollController = ScrollController();
   final _selected = <String, AssetEntity>{};
   List<AssetPathEntity> _albums = [];
@@ -52,6 +56,8 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
   PermissionState? _permission;
   bool _libraryLoading = false;
   bool _libraryFailed = false;
+  Object? _libraryError;
+  String _errorStage = 'permission';
   bool _albumsLoaded = false;
   bool _albumsLoading = false;
   int _libraryGeneration = 0;
@@ -94,8 +100,10 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
     setState(() {
       _libraryLoading = true;
       _libraryFailed = false;
+      _libraryError = null;
     });
     try {
+      _errorStage = 'permission';
       final permission = requestPermission
           ? await PhotoManager.requestPermissionExtend(requestOption: _permissionOptions)
           : await PhotoManager.getPermissionState(requestOption: _permissionOptions);
@@ -111,7 +119,8 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
       // Query All first: counting media does not require reading bucket names.
       // Some Android providers return null/malformed album names. Loading those
       // before the grid used to make the entire gallery fail. Albums are lazy.
-      final albums = await PhotoManager.getAssetPathList(type: RequestType.common, onlyAll: true);
+      _errorStage = 'media index';
+      final albums = await PhotoManager.getAssetPathList(type: RequestType.common, onlyAll: true, filterOption: _queryOptions);
       if (!mounted) return;
       _albums = albums;
       _albumsLoaded = false;
@@ -123,7 +132,10 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
       }
     } catch (error, stack) {
       _logger.warning('Could not load the media library', error, stack);
-      if (mounted) _libraryFailed = true;
+      if (mounted) {
+        _libraryFailed = true;
+        _libraryError = error;
+      }
     } finally {
       if (mounted) {
         _libraryLoading = false;
@@ -135,7 +147,15 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
   Future<void> _selectAlbum(AssetPathEntity album) async {
     _album = album;
     if (_scrollController.hasClients) _scrollController.jumpTo(0);
-    await _pager.reset((page) => album.getAssetListPaged(page: page, size: _pageSize));
+    _errorStage = 'media page';
+    await _pager.reset((page) async {
+      try {
+        return await album.getAssetListPaged(page: page, size: _pageSize);
+      } catch (error, stack) {
+        _logger.warning('Could not read media page $page', error, stack);
+        rethrow;
+      }
+    });
   }
 
   Future<void> _chooseAlbum() async {
@@ -144,7 +164,7 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
       final generation = _libraryGeneration;
       setState(() => _albumsLoading = true);
       try {
-        final albums = await PhotoManager.getAssetPathList(type: RequestType.common);
+        final albums = await PhotoManager.getAssetPathList(type: RequestType.common, filterOption: _queryOptions);
         if (!mounted || generation != _libraryGeneration) return;
         if (albums.isNotEmpty) _albums = albums;
         _albumsLoaded = true;
@@ -197,6 +217,33 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
   Future<void> _chooseMore() async {
     await PhotoManager.presentLimited(type: RequestType.common);
     if (mounted) await _loadLibrary();
+  }
+
+  Future<void> _showErrorDetails() async {
+    final error = _libraryError ?? _pager.error;
+    if (error == null) return;
+    final detail = error is PlatformException ? '${error.code}\n${error.message ?? ''}' : error.toString();
+    final report =
+        'LocalSend OLED 1.18.2+65\n${Platform.operatingSystemVersion}\nStage: $_errorStage\n'
+        '${detail.length > 4000 ? detail.substring(0, 4000) : detail}';
+    await showStaticDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Gallery error details'),
+        content: SingleChildScrollView(child: SelectableText(report)),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(dialogContext).pop(), child: const Text('Close')),
+          TextButton(
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: report));
+              if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+              if (mounted) context.showSnackBar('Error details copied.');
+            },
+            child: const Text('Copy'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -260,6 +307,7 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
                         ),
                         if (denied) TextButton(onPressed: PhotoManager.openSetting, child: const Text('Open settings')),
                         if (_libraryFailed || _pager.error != null) TextButton(onPressed: _loadLibrary, child: const Text('Retry')),
+                        if (_libraryFailed || _pager.error != null) TextButton(onPressed: _showErrorDetails, child: const Text('Error details')),
                       ],
                     ),
                   )
@@ -319,6 +367,7 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
           ),
           if (_pager.isLoading && items.isNotEmpty) const Padding(padding: EdgeInsets.all(8), child: Text('Loading…')),
           if (_pager.error != null && items.isNotEmpty) TextButton(onPressed: _pager.loadNext, child: const Text('Retry loading more')),
+          if (_pager.error != null && items.isNotEmpty) TextButton(onPressed: _showErrorDetails, child: const Text('Error details')),
           const Padding(
             padding: EdgeInsets.all(8),
             child: Text('Tap to select · Hold to preview', style: TextStyle(fontSize: 12)),

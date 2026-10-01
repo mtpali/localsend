@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -54,6 +57,18 @@ void main() {
     expect(find.byKey(const ValueKey('photo1')), findsOneWidget);
     expect(find.byKey(const ValueKey('video1')), findsOneWidget);
     expect(calls.where((c) => c.method == 'getAssetPathList').length, 1);
+    final query = (calls.firstWhere((c) => c.method == 'getAssetPathList').arguments as Map)['option'] as Map;
+    expect((calls.firstWhere((c) => c.method == 'getAssetListPaged').arguments as Map)['option'], query);
+    expect(query['child']['orders'], isEmpty); // Native classical filters use _id DESC.
+    expect(query['child']['createDate']['ignore'], true);
+    expect(query['child']['image']['size']['ignoreSize'], true);
+    if (const bool.fromEnvironment('EXPORT_MEDIA_QUERY')) {
+      // Feed the actual Dart channel payload to the Kotlin/SQLite regression
+      // suite, so it exercises the plugin with the same query as this screen.
+      final fixture = File('build/gallery-tests/gallery-query.json');
+      fixture.parent.createSync(recursive: true);
+      fixture.writeAsStringSync(jsonEncode(query));
+    }
     expect((calls.firstWhere((c) => c.method == 'requestPermissionExtend').arguments as Map)['androidPermission']['mediaLocation'], false);
 
     await tester.tap(find.text('All photos and videos'));
@@ -61,6 +76,7 @@ void main() {
     expect(find.byKey(const ValueKey('photo1')), findsOneWidget);
     expect(find.text('Could not load photos and videos.'), findsNothing);
     expect(find.text('Could not load albums. All photos and videos are still available.'), findsOneWidget);
+    expect((calls.lastWhere((c) => c.method == 'getAssetPathList').arguments as Map)['option'], query);
     await tester.pumpWidget(const SizedBox());
   });
 
@@ -110,6 +126,15 @@ void main() {
 
     await openGallery(tester);
     expect(find.text('Could not load photos and videos.'), findsOneWidget);
+    await tester.tap(find.text('Error details'));
+    await tester.pumpAndSettle();
+    expect(find.text('Gallery error details'), findsOneWidget);
+    final details = tester.widget<SelectableText>(find.byType(SelectableText)).data!;
+    expect(details, contains('Stage: media index'));
+    expect(details, contains('Media provider unavailable'));
+    expect(find.text('Copy'), findsOneWidget);
+    await tester.tap(find.text('Close'));
+    await tester.pumpAndSettle();
     fail = false;
     await tester.tap(find.text('Retry'));
     await tester.pumpAndSettle();
