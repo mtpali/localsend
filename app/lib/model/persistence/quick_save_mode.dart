@@ -1,0 +1,1 @@
+enum QuickSaveMode { off, on }
