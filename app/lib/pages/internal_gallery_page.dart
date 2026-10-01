@@ -283,9 +283,8 @@ String _duration(int seconds) => '${seconds ~/ 60}:${(seconds % 60).toString().p
 
 class _MediaThumbnail extends StatefulWidget {
   final AssetEntity asset;
-  final int size;
 
-  const _MediaThumbnail({required this.asset, this.size = _thumbnailSize});
+  const _MediaThumbnail({required this.asset});
 
   @override
   State<_MediaThumbnail> createState() => _MediaThumbnailState();
@@ -293,7 +292,7 @@ class _MediaThumbnail extends StatefulWidget {
 
 class _MediaThumbnailState extends State<_MediaThumbnail> {
   final _cancelToken = PMCancelToken();
-  late final _thumbnail = widget.asset.thumbnailDataWithSize(ThumbnailSize.square(widget.size), quality: 75, cancelToken: _cancelToken);
+  late final _thumbnail = widget.asset.thumbnailDataWithSize(const ThumbnailSize.square(_thumbnailSize), quality: 75, cancelToken: _cancelToken);
 
   @override
   void dispose() {
@@ -309,8 +308,8 @@ class _MediaThumbnailState extends State<_MediaThumbnail> {
         : Image.memory(
             snapshot.data!,
             fit: BoxFit.cover,
-            cacheWidth: widget.size,
-            cacheHeight: widget.size,
+            cacheWidth: _thumbnailSize,
+            cacheHeight: _thumbnailSize,
             filterQuality: FilterQuality.low,
             errorBuilder: (_, _, _) => const Center(child: Icon(Icons.broken_image)),
           ),

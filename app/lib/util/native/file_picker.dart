@@ -4,7 +4,6 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/model/cross_file.dart';
 import 'package:localsend_app/pages/apk_picker_page.dart';
@@ -13,8 +12,8 @@ import 'package:localsend_app/provider/device_info_provider.dart';
 import 'package:localsend_app/provider/selection/selected_sending_files_provider.dart';
 import 'package:localsend_app/util/determine_image_type.dart';
 import 'package:localsend_app/util/image_converter.dart';
-import 'package:localsend_app/util/native/channel/android_channel.dart' as android_channel;
 import 'package:localsend_app/util/native/cache_helper.dart';
+import 'package:localsend_app/util/native/channel/android_channel.dart' as android_channel;
 import 'package:localsend_app/util/native/cross_file_converters.dart';
 import 'package:localsend_app/util/native/pick_directory_path.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
@@ -41,7 +40,8 @@ enum FilePickerOption {
   media(Icons.image),
   text(Icons.subject),
   app(Icons.apps),
-  clipboard(Icons.paste);
+  clipboard(Icons.paste)
+  ;
 
   const FilePickerOption(this.icon);
 
