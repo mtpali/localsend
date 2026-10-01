@@ -25,8 +25,6 @@ with ZipFile(output, "w", ZIP_DEFLATED, compresslevel=9) as archive:
         "build/android-gallery-tests.json",
         "build/apk-size-report.json",
         "app/build/app/test-results/testReleaseUnitTest/TEST-*.xml",
-        "app/build/app/outputs/mapping/release/*.txt",
-        "app/build/symbols/*",
     ]:
         for path in sorted(root.glob(pattern)):
             if path.is_file():
