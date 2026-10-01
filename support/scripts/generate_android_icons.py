@@ -20,11 +20,12 @@ def fit(side, scale=1.0, transparent=False):
 for density, factor in [("mdpi", 1), ("hdpi", 1.5), ("xhdpi", 2), ("xxhdpi", 3), ("xxxhdpi", 4)]:
     folder = res / ("mipmap-" + density)
     folder.mkdir(parents=True, exist_ok=True)
-    legacy = fit(round(48 * factor))
+    legacy = fit(round(48 * factor), 0.90)
     legacy.save(folder / "ic_launcher.png", optimize=True)
     legacy.save(folder / "ic_launcher_round.png", optimize=True)
-    # Keep the artwork within the adaptive icon safe zone; never crop or fill.
-    foreground = fit(round(108 * factor), 0.90)
+    # Android displays only the middle 72dp of a 108dp adaptive layer.
+    # Match the 48dp legacy icon's apparent size and leave ample black padding.
+    foreground = fit(round(108 * factor), 0.60)
     foreground.save(folder / "ic_launcher_foreground.png", optimize=True)
     alpha = foreground.convert("L")
     mono = Image.new("RGBA", foreground.size, (255, 255, 255, 0))

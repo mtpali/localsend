@@ -85,6 +85,14 @@ android {
         }
     }
 
+    // These are standalone downloads. Compress native libraries in the APK;
+    // Android extracts them once at install time instead of mapping the ZIP.
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
     // Required by F-Droid
     dependenciesInfo {
         // Disables dependency metadata when building APKs.

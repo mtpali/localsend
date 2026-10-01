@@ -1,22 +1,38 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:localsend_app/util/gallery_pager.dart';
 import 'package:localsend_app/util/ui/snackbar.dart';
 import 'package:localsend_app/widget/static_controls.dart';
+import 'package:logging/logging.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 const _pageSize = 80;
 const _thumbnailSize = 192;
-const _permissionOptions = PermissionRequestOption(androidPermission: AndroidPermission(type: RequestType.common, mediaLocation: true));
+// Browsing must not depend on granting access to a photo's GPS metadata.
+// Original-file metadata access is requested only after selection is confirmed.
+const _permissionOptions = PermissionRequestOption(androidPermission: AndroidPermission(type: RequestType.common, mediaLocation: false));
+const _originalPermissionOptions = PermissionRequestOption(androidPermission: AndroidPermission(type: RequestType.common, mediaLocation: true));
+final _logger = Logger('InternalGallery');
 
 Future<T?> _pushGalleryPage<T>(BuildContext context, Widget page) => Navigator.of(
   context,
 ).push<T>(PageRouteBuilder<T>(transitionDuration: Duration.zero, reverseTransitionDuration: Duration.zero, pageBuilder: (_, _, _) => page));
 
-Future<List<AssetEntity>?> pickInternalGallery(BuildContext context) => _pushGalleryPage(context, const InternalGalleryPage());
+Future<List<AssetEntity>?> pickInternalGallery(BuildContext context) async {
+  final selected = await _pushGalleryPage<List<AssetEntity>>(context, const InternalGalleryPage());
+  if (selected != null && selected.isNotEmpty && defaultTargetPlatform == TargetPlatform.android) {
+    try {
+      await PhotoManager.requestPermissionExtend(requestOption: _originalPermissionOptions);
+    } catch (error, stack) {
+      _logger.warning('Original media metadata permission was unavailable', error, stack);
+    }
+  }
+  return selected;
+}
 
 /// A lazy internal gallery. Only visible thumbnails are decoded; original
 /// files are resolved after confirmation, keeping browsing and selection fast.
@@ -27,7 +43,7 @@ class InternalGalleryPage extends StatefulWidget {
   State<InternalGalleryPage> createState() => _InternalGalleryPageState();
 }
 
-class _InternalGalleryPageState extends State<InternalGalleryPage> {
+class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsBindingObserver {
   late final _pager = GalleryPager<AssetEntity>(pageSize: _pageSize, onChanged: _rebuild);
   final _scrollController = ScrollController();
   final _selected = <String, AssetEntity>{};
@@ -36,14 +52,23 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> {
   PermissionState? _permission;
   bool _libraryLoading = false;
   bool _libraryFailed = false;
+  bool _albumsLoaded = false;
+  bool _albumsLoading = false;
+  int _libraryGeneration = 0;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _scrollController.addListener(() {
       if (_scrollController.position.extentAfter < 600 && _pager.error == null) unawaited(_pager.loadNext());
     });
     unawaited(_loadLibrary(requestPermission: true));
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) unawaited(_loadLibrary());
   }
 
   void _rebuild() {
@@ -64,7 +89,8 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> {
   }
 
   Future<void> _loadLibrary({bool requestPermission = false}) async {
-    if (_libraryLoading) return;
+    if (!mounted || _libraryLoading) return;
+    _libraryGeneration++;
     setState(() {
       _libraryLoading = true;
       _libraryFailed = false;
@@ -82,17 +108,21 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> {
         await _pager.reset((_) async => []);
         return;
       }
-      final albums = await PhotoManager.getAssetPathList(type: RequestType.common);
+      // Query All first: counting media does not require reading bucket names.
+      // Some Android providers return null/malformed album names. Loading those
+      // before the grid used to make the entire gallery fail. Albums are lazy.
+      final albums = await PhotoManager.getAssetPathList(type: RequestType.common, onlyAll: true);
       if (!mounted) return;
       _albums = albums;
-      final previousId = _album?.id;
-      _album = albums.where((p) => p.id == previousId).firstOrNull ?? albums.firstOrNull;
+      _albumsLoaded = false;
+      _album = albums.firstOrNull;
       if (_album == null) {
         await _pager.reset((_) async => []);
       } else {
         await _selectAlbum(_album!);
       }
-    } catch (_) {
+    } catch (error, stack) {
+      _logger.warning('Could not load the media library', error, stack);
       if (mounted) _libraryFailed = true;
     } finally {
       if (mounted) {
@@ -109,6 +139,24 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> {
   }
 
   Future<void> _chooseAlbum() async {
+    if (_albumsLoading) return;
+    if (!_albumsLoaded) {
+      final generation = _libraryGeneration;
+      setState(() => _albumsLoading = true);
+      try {
+        final albums = await PhotoManager.getAssetPathList(type: RequestType.common);
+        if (!mounted || generation != _libraryGeneration) return;
+        if (albums.isNotEmpty) _albums = albums;
+        _albumsLoaded = true;
+      } catch (error, stack) {
+        _logger.warning('Could not load albums; All media remains usable', error, stack);
+        if (mounted) context.showSnackBar('Could not load albums. All photos and videos are still available.');
+        return;
+      } finally {
+        if (mounted) setState(() => _albumsLoading = false);
+      }
+    }
+    if (!mounted) return;
     final album = await showStaticDialog<AssetPathEntity>(
       context: context,
       builder: (dialogContext) => SimpleDialog(
@@ -153,6 +201,8 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _libraryGeneration++;
     _pager.dispose();
     _scrollController.dispose();
     _selected.clear();
@@ -182,7 +232,7 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: _albums.isEmpty ? null : _chooseAlbum,
+                    onPressed: _albums.isEmpty || _albumsLoading ? null : _chooseAlbum,
                     icon: const Icon(Icons.folder),
                     label: Text(_album == null || _album!.isAll ? 'All photos and videos' : _album!.name, overflow: TextOverflow.ellipsis),
                   ),

@@ -18,6 +18,7 @@ for abi, filename in expected.items():
         assert not any("assets/i18n/" in name for name in names)
         assert any(name.endswith("/libapp.so") for name in names)
         assert any(name.endswith("/librust_lib_localsend_app.so") for name in names)
+        assert all(entry.compress_type == zipfile.ZIP_DEFLATED for entry in archive.infolist() if entry.filename.endswith(".so")), "Native libraries must be compressed in standalone APKs"
     report[abi] = {"bytes": file.stat().st_size, "file": filename}
 mapping = root / "app/build/app/outputs/mapping/release/mapping.txt"
 assert mapping.is_file() and mapping.stat().st_size > 0, "R8 mapping was not emitted"
