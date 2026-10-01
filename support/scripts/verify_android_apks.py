@@ -21,5 +21,7 @@ for abi, filename in expected.items():
     report[abi] = {"bytes": file.stat().st_size, "file": filename}
 mapping = root / "app/build/app/outputs/mapping/release/mapping.txt"
 assert mapping.is_file() and mapping.stat().st_size > 0, "R8 mapping was not emitted"
-(root / "build/apk-size-report.json").write_text(json.dumps(report, indent=2))
+report_file = root / "build/apk-size-report.json"
+report_file.parent.mkdir(parents=True, exist_ok=True)
+report_file.write_text(json.dumps(report, indent=2))
 print(json.dumps(report, indent=2))
