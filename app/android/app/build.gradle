@@ -47,7 +47,11 @@ android {
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 37
         resourceConfigurations += ["en"]
-        ndk { abiFilters "armeabi-v7a", "arm64-v8a" }
+        // AGP forbids using ndk.abiFilters together with Flutter's ABI splits.
+        // Split builds select both ARM targets using --target-platform instead.
+        if (!project.findProperty("split-per-abi")?.toString()?.toBoolean()) {
+            ndk { abiFilters "armeabi-v7a", "arm64-v8a" }
+        }
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
