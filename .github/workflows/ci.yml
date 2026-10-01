@@ -139,6 +139,13 @@ jobs:
         run: python3 support/scripts/summarize_gallery_tests.py
       - name: Verify architectures, shrinking, and removed assets
         run: python3 support/scripts/verify_android_apks.py
+      - name: Package signing tools and validation evidence
+        run: python3 support/scripts/package_android_validation.py
+      - uses: actions/upload-artifact@v6
+        with:
+          name: Android-signing-and-validation
+          path: build/Android-signing-and-validation.zip
+          if-no-files-found: error
       - uses: actions/upload-artifact@v6
         with:
           name: LocalSend-OLED-ARMv7
