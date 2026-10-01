@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
 import 'package:localsend_app/config/init.dart';
-import 'package:localsend_app/config/theme.dart';
 import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/pages/home_page_controller.dart';
 import 'package:localsend_app/pages/tabs/receive_tab.dart';
@@ -17,8 +16,7 @@ import 'package:refena_flutter/refena_flutter.dart';
 enum HomeTab {
   receive(Icons.wifi),
   send(Icons.send),
-  settings(Icons.settings)
-  ;
+  settings(Icons.settings);
 
   const HomeTab(this.icon);
 
@@ -100,27 +98,10 @@ class _HomePageState extends State<HomePage> with Refena {
             body: Row(
               children: [
                 if (!sizingInformation.isMobile)
-                  NavigationRail(
+                  _StaticNavigationRail(
                     selectedIndex: vm.currentTab.index,
                     onDestinationSelected: (index) => vm.changeTab(HomeTab.values[index]),
                     extended: sizingInformation.isDesktop,
-                    backgroundColor: Theme.of(context).cardColorWithElevation,
-                    leading: sizingInformation.isDesktop
-                        ? const Column(
-                            children: [
-                              SizedBox(height: 20),
-                              Text(
-                                'LocalSend',
-                                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 20),
-                            ],
-                          )
-                        : null,
-                    destinations: HomeTab.values.map((tab) {
-                      return NavigationRailDestination(icon: Icon(tab.icon), label: Text(tab.label));
-                    }).toList(),
                   ),
                 Expanded(
                   child: SafeArea(
@@ -166,4 +147,54 @@ class _HomePageState extends State<HomePage> with Refena {
       ),
     );
   }
+}
+
+/// NavigationRail has internal animation controllers even when reduced motion
+/// is enabled. Keep wide Android layouts as static as the phone layout.
+class _StaticNavigationRail extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onDestinationSelected;
+  final bool extended;
+
+  const _StaticNavigationRail({required this.selectedIndex, required this.onDestinationSelected, required this.extended});
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: extended ? 200 : 80,
+    child: SafeArea(
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          if (extended) ...[const Text('LocalSend', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)), const SizedBox(height: 20)],
+          for (final tab in HomeTab.values)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: Semantics(
+                selected: selectedIndex == tab.index,
+                label: tab.label,
+                child: InkWell(
+                  onTap: () => onDestinationSelected(tab.index),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    color: selectedIndex == tab.index ? Colors.white : Colors.black,
+                    child: Row(
+                      mainAxisAlignment: extended ? MainAxisAlignment.start : MainAxisAlignment.center,
+                      children: [
+                        Icon(tab.icon, color: selectedIndex == tab.index ? Colors.black : Colors.white),
+                        if (extended) ...[
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(tab.label, style: TextStyle(color: selectedIndex == tab.index ? Colors.black : Colors.white)),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
 }

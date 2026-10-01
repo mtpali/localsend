@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:localsend_app/provider/network/discovery_lifecycle_provider.dart';
 import 'package:localsend_app/model/state/network_state.dart';
+import 'package:localsend_app/provider/network/discovery_lifecycle_provider.dart';
 import 'package:localsend_app/provider/settings_provider.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
 import 'package:localsend_isolates/util/network_interfaces.dart';
@@ -16,15 +16,16 @@ import 'package:refena_flutter/refena_flutter.dart';
 final _logger = Logger('NetworkInfo');
 
 final localIpProvider = ReduxProvider<LocalIpService, NetworkState>((ref) {
-  return LocalIpService(ref.notifier(settingsProvider));
+  return LocalIpService(ref.notifier(settingsProvider), ref);
 });
 
 class LocalIpService extends ReduxNotifier<NetworkState> {
   final SettingsService _settingsService;
+  final Ref _ref;
   StreamSubscription? _subscription;
   Timer? _pollTimer;
 
-  LocalIpService(this._settingsService);
+  LocalIpService(this._settingsService, this._ref);
 
   @override
   NetworkState init() {
@@ -94,7 +95,7 @@ class FetchLocalIpAction extends AsyncReduxAction<LocalIpService, NetworkState> 
   @override
   void after() {
     if (notifyDiscovery && (forceRefresh || _changed)) {
-      unawaited(notifier.ref.read(discoveryLifecycleProvider).refresh());
+      unawaited(notifier._ref.read(discoveryLifecycleProvider).refresh());
     }
   }
 }

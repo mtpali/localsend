@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:localsend_app/gen/strings.g.dart';
+import 'package:localsend_app/util/native/channel/android_channel.dart';
 import 'package:localsend_app/widget/dialogs/custom_bottom_sheet.dart';
 import 'package:routerino/routerino.dart';
-import 'package:localsend_app/util/native/channel/android_channel.dart';
 
 class LocalNetworkDialog extends StatelessWidget {
   const LocalNetworkDialog({super.key});

@@ -1,15 +1,16 @@
 import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:localsend_app/provider/local_ip_provider.dart';
-import 'package:localsend_app/util/network_recovery.dart';
 import 'package:localsend_app/provider/network/nearby_devices_provider.dart';
 import 'package:localsend_app/provider/network/scan_facade.dart';
 import 'package:localsend_app/provider/network/server/server_provider.dart';
 import 'package:localsend_app/util/native/channel/android_channel.dart';
 import 'package:localsend_app/util/native/platform_check.dart';
-import 'package:flutter/foundation.dart';
+import 'package:localsend_app/util/network_recovery.dart';
+import 'package:localsend_isolates/isolate.dart';
 import 'package:logging/logging.dart';
 import 'package:refena_flutter/refena_flutter.dart';
-import 'package:localsend_isolates/isolate.dart';
 
 final _logger = Logger('DiscoveryLifecycle');
 final discoveryLifecycleProvider = Provider((ref) => DiscoveryLifecycle(ref));
