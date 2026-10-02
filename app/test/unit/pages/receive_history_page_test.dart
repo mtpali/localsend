@@ -39,7 +39,7 @@ void main() {
     });
     final persistence = await PersistenceService.initialize();
     final container = RefenaContainer(overrides: [persistenceProvider.overrideWithValue(persistence)]);
-    addTearDown(container.dispose);
+    addTearDown(() => container.dispose(receiveHistoryProvider));
     await tester.pumpWidget(
       RefenaScope.withContainer(
         container: container,
@@ -92,7 +92,7 @@ void main() {
     expect(find.text(received.fileName), findsOneWidget);
     expect(persistence.getReceiveHistory(), [received]);
     final restarted = RefenaContainer(overrides: [persistenceProvider.overrideWithValue(persistence)]);
-    addTearDown(restarted.dispose);
+    addTearDown(() => restarted.dispose(receiveHistoryProvider));
     expect(restarted.read(receiveHistoryProvider), [received]);
     await tester.pumpWidget(const SizedBox());
   }, variant: TargetPlatformVariant.only(TargetPlatform.android));
