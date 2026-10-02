@@ -224,7 +224,7 @@ class _InternalGalleryPageState extends State<InternalGalleryPage> with WidgetsB
     if (error == null) return;
     final detail = error is PlatformException ? '${error.code}\n${error.message ?? ''}' : error.toString();
     final report =
-        'LocalSend OLED 1.18.2+66\n${Platform.operatingSystemVersion}\nStage: $_errorStage\n'
+        'LocalSend OLED 1.18.2+67\n${Platform.operatingSystemVersion}\nStage: $_errorStage\n'
         '${detail.length > 4000 ? detail.substring(0, 4000) : detail}';
     await showStaticDialog<void>(
       context: context,

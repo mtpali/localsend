@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
-import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_isolates/model/file_type.dart';
 
 part 'receive_history_entry.mapper.dart';
@@ -40,8 +39,9 @@ class ReceiveHistoryEntry with ReceiveHistoryEntryMappable {
   /// Because the raw timestamp is saved in UTC, we need to transform it to local time zone first.
   String get timestampString {
     final localTimestamp = timestamp.toLocal();
-    final languageTag = LocaleSettings.currentLocale.languageTag;
-    return '${DateFormat.yMd(languageTag).format(localTimestamp)} ${DateFormat.jm(languageTag).format(localTimestamp)}';
+    // intl ships en_US data by default. The language-only "en" locale needs
+    // initialization, which the English-only app no longer performs.
+    return '${DateFormat.yMd('en_US').format(localTimestamp)} ${DateFormat.jm('en_US').format(localTimestamp)}';
   }
 
   static const fromJson = ReceiveHistoryEntryMapper.fromJson;

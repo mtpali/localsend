@@ -9,7 +9,7 @@ import 'package:localsend_isolates/model/device.dart';
 import 'package:refena_flutter/refena_flutter.dart';
 import 'package:routerino/routerino.dart';
 
-final _timeFormat = DateFormat.jm(LocaleSettings.currentLocale.languageTag);
+final _timeFormat = DateFormat.jm('en_US');
 
 /// Shows the general information of a discovered device and
 /// the log of its retained discovery confirmations.
